@@ -522,7 +522,12 @@ a.mobile-nav-toggle {
     font-size: 15px;
     margin: 0; }
   .title-section .right-part {
-    padding-top: 15px; }
+    padding-top: 15px; 
+}
+.title-section .right-part .button-one{
+      background-color:rgb(11,9,102);
+    color:white;
+}
 
 .title-section.white-style h1 {
   color: #ffffff; }
