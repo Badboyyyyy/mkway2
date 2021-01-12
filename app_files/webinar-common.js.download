@@ -1,0 +1,682 @@
+(function() {
+    var ajax = window.exposedMdules.ajaxModule.ajax;
+    var formPlatformUrl = window.exposedMdules.ajaxModule.formPlatformUrl;
+    var formSubSystemUrl = window.exposedMdules.ajaxModule.formSubSystemPath;
+    var _RESEND_OTP_COUNT = 0;
+    var webinarCommon = {
+        _RESEND_OTP_COUNT: 0,
+        // checkLocalData: function() {
+        //     var _STORAGE_KEY = "VEDANTU_LEAD_CAPTURE_DATA";
+        //     try {
+        //         var dataObj = null;
+        //         if (!!window.localStorage && !!window.localStorage.getItem) {
+        //             dataObj = window.localStorage.getItem(_STORAGE_KEY);
+        //             dataObj = JSON.parse(dataObj);
+        //             if (dataObj) {
+        //                 document.getElementById('studentName').value = !!dataObj.firstName ? dataObj.firstName : "";
+        //                 document.getElementById('studentEmail').value = !!dataObj.emailId ? dataObj.emailId : "";
+        //                 document.getElementById('studentNumber').value = !!dataObj.phone ? dataObj.phone : "";
+        //                 document.getElementById('studentCountryCode').value = !!dataObj.phoneCode ? dataObj.phoneCode : "";
+        //                 // document.getElementById('studentGrade').innerText = !!dataObj.grade ? dataObj.grade : "";
+        //             }
+        //         }
+        //     } catch (err) {
+        //         window.console.error(err);
+        //     }
+        // },
+        getAllUrlParams: function () {
+            var keyPairs = {},
+                  params = window.location.search.substring(1).split('&');
+            for (var i = params.length - 1; i >= 0; i--) {
+                var paramName = params[i].split('=')[0];
+                keyPairs[paramName] = params[i].split('=')[1];
+            };
+            return keyPairs;
+        },
+        checkParam: function(param, urlParams) {
+            if(urlParams[param]) {
+                return urlParams[param];
+            }
+            return false;
+        },
+        getUtmParams: function () {
+            var urlParams = this.getAllUrlParams();
+            return {
+                utm_source: this.checkParam('utm_source', urlParams) || '',
+                utm_medium: this.checkParam('utm_medium', urlParams) || '',
+                utm_campaign: this.checkParam('utm_campaign', urlParams) || '',
+                utm_term: this.checkParam('utm_term', urlParams) || '',
+                utm_content: this.checkParam('utm_content', urlParams) || '',
+                channel: this.checkParam('channel', urlParams) || ''
+            }
+        },
+        vCookies: {
+            getItem: function(sKey) {
+                if (!sKey) {
+                    return null;
+                }
+                return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+            },
+            setItem: function(sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+                if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) {
+                    return false;
+                }
+                var sExpires = "";
+                if (vEnd) {
+                    switch (vEnd.constructor) {
+                        case Number:
+                            sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+                            break;
+                        case String:
+                            sExpires = "; expires=" + vEnd;
+                            break;
+                        case Date:
+                            sExpires = "; expires=" + vEnd.toUTCString();
+                            break;
+                    }
+                }
+                document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+                return true;
+            },
+            removeItem: function(sKey, sPath, sDomain) {
+                if (!this.hasItem(sKey)) {
+                    return false;
+                }
+                document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "");
+                return true;
+            },
+            hasItem: function(sKey) {
+                if (!sKey) {
+                    return false;
+                }
+                return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+            },
+            keys: function() {
+                var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+                for (var nLen = aKeys.length, nIdx = 0; nIdx < nLen; nIdx++) {
+                    aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]);
+                }
+                return aKeys;
+            }
+        },
+        storeLeadData: function(leadData) {
+            var _STORAGE_KEY = "VEDANTU_LEAD_CAPTURE_DATA";
+            try {
+                if (!leadData) { return false; }
+                var leadCaptureData = {
+                    "fullName": "",
+                    "email": "",
+                    "contactNumber": "",
+                    "grade": "",
+                    "phoneCode": ""
+                };
+                leadCaptureData.firstName = !!leadData.firstName ? leadData.firstName : "";
+                leadCaptureData.emailId = !!leadData.email ? leadData.email : "";
+                leadCaptureData.phone = !!leadData.contactNumber ? leadData.contactNumber : "";
+                leadCaptureData.grade = !!leadData.grade ? leadData.grade : "";
+                leadCaptureData.phoneCode = !!leadData.phoneCode ? leadData.phoneCode : "";
+        
+                if (!!window.localStorage && !!window.localStorage.setItem) {
+                    window.localStorage.setItem(_STORAGE_KEY, window.JSON.stringify(leadCaptureData));
+                }
+                return leadCaptureData;
+            } catch (err) {
+                window.console.error(err);
+            }
+        },
+        showLoader: function() {
+            document.getElementById('webinar-loader').classList.remove('hidden');
+        },
+        hideLoader: function() {
+            document.getElementById('webinar-loader').classList.add('hidden');
+        },
+        scrollTop: function() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        },
+        clevertapObj: (function() {
+            function flattenObject(object) {
+                var flatObject = {};
+        
+                for (var key in object) {
+                    var childFlatObject;
+        
+                    if (object.hasOwnProperty(key)) {
+        
+                        if ((typeof object[key]) === 'object') {
+                            childFlatObject = flattenObject(object[key]);
+        
+                            for (var childKey in childFlatObject) {
+                                if (childFlatObject.hasOwnProperty(childKey)) {
+                                    flatObject[childKey] = childFlatObject[childKey];
+                                }
+                            }
+                        } else {
+                            flatObject[key] = object[key];
+                        }
+                    }
+                }
+                return flatObject;
+            }
+        
+            return {
+                initialised: false,
+                init: function() {
+                    var oThis = this;
+                    if (!!window.clevertap) {
+                        this.initialised = true;
+                    }
+                },
+        
+                setIdentity: function(leadData) {
+                    var leadCaptureData = {
+                        "fullName": "",
+                        "email": "",
+                        "contactNumber": "",
+                        "grade": "",
+                        "phoneCode": ""
+                    };
+                    leadCaptureData.Name = !!leadData.firstName ? leadData.firstName : "";
+                    leadCaptureData.Email = !!leadData.email ? leadData.email : "";
+                    leadCaptureData.contactNumber = !!leadData.contactNumber ? leadData.contactNumber : "";
+                    leadCaptureData.grade = !!leadData.grade ? leadData.grade : "";
+                    leadCaptureData.phoneCode = !!leadData.phoneCode ? leadData.phoneCode : "";
+                    leadCaptureData.Phone= "+"+leadCaptureData.phoneCode+""+leadCaptureData.contactNumber;
+                    leadCaptureData.Identity = !!leadData.contactNumber ? leadData.contactNumber : "";
+        
+                    var profile = {};
+                    console.log('--------- user data --------');
+                    console.log(leadCaptureData);
+                    profile['Site'] = leadCaptureData;
+        
+                    window.clevertap.onUserLogin.push(profile);
+        
+                },
+        
+                trackEvent: function(eventName, eventProperties) {
+                    if (this.initialised) {
+                        try {
+                            window.clevertap.event.push(eventName, flattenObject(eventProperties));
+                        } catch (err) {
+                            console.log("Unable to send clevertap event::", err);
+                        }
+                    }
+                }
+            };
+        })(),
+        storeRegisteredWebinarData: function (webinarId) {
+            var _KEY = "REGISTERED_WEBINARS";
+            if (!!window.localStorage && !!window.localStorage.setItem && !!window.localStorage.getItem) {
+                var storedData = window.localStorage.getItem(_KEY);
+                storedData = storedData ? storedData+"|" : "";
+                storedData += (webinarId || window.exposedVariables.webinarName);
+                window.localStorage.setItem("REGISTERED_WEBINARS", window.JSON.stringify(storedData));
+            }
+        },
+        checkOtp: function(e, params, postRegistrationFlow, webinarId, startTime, teacherName, webinarUrl) {
+            e.preventDefault();
+            var self = this;
+            var otp = document.getElementById('otp-input-field').value;
+            var url = formPlatformUrl('/cms/webinar/confirmOTP');
+            this.showLoader();
+            params.phone = document.getElementById('studentNumber').value;
+            params.webinarId = webinarId || window.exposedVariables.webinarId;
+            params.otp = otp;
+            ajax(url, "POST", params, true, function(resp) {
+                self.hideLoader();
+                resp = JSON.parse(resp);
+                if(resp.status === 'CONFIRMED') {
+                    document.getElementById('otp-overlay').classList.add('is-hidden');
+                    document.querySelector('body').classList.remove('body-no-scroll');
+                    postRegistrationFlow(resp, params, webinarId, startTime, teacherName, webinarUrl);
+                }
+            }, function(err) {
+                resp = JSON.parse(err);
+                if(resp && resp.errorCode === 'INVALID_TOKEN') {
+                    document.getElementsByClassName('top-popup-theme')[0].classList.add('incorrect-otp');
+                }
+                self.hideLoader();
+            })
+        },
+        resendOtp: function(webinarId) {
+            var self = this;
+            if(_RESEND_OTP_COUNT < 2) {
+                _RESEND_OTP_COUNT ++;
+                var params = {
+                    phone: document.getElementById('studentNumber').value,
+                    webinarId: webinarId || window.exposedVariables.webinarId
+                }
+                var url = formPlatformUrl('/cms/webinar/resendOTP');
+                this.showLoader();
+                ajax(url, "POST", params, true, function(resp) {
+                    self.hideLoader();
+                    resp = JSON.parse(resp);
+                }, function(err) {
+                    resp = JSON.parse(err);
+                    self.hideLoader();
+                })
+            } else {
+                document.getElementsByClassName('top-popup-theme')[0].classList.add('multiple-trials');
+            }
+            
+        },
+        showOtpDialog: function(params, postRegistrationFlow, webinarId, startTime, teacherName, webinarUrl) {
+            var self = this;
+            document.getElementById('otp-overlay').classList.remove('is-hidden');
+            document.querySelector('body').classList.add('body-no-scroll');
+            document.getElementById('alert-dynamic-number').innerText = params.phone;
+            document.getElementById('alert-dynamic-code').innerText = '+' + params.phoneCode;
+            document.getElementById('close-otp-modal').addEventListener('click', function(evt) {
+                document.getElementsByClassName('top-popup-theme')[0].classList.remove('multiple-trials');
+                document.getElementById('otp-overlay').classList.add('is-hidden');
+                document.querySelector('body').classList.remove('body-no-scroll');
+                document.getElementsByClassName('top-popup-theme')[0].classList.remove('incorrect-otp');
+                document.getElementById('otp-input-field').value = '';
+            });
+            document.getElementById('otp-submit-btn').addEventListener('click', function(e) {
+                self.checkOtp.call(self, e, params, postRegistrationFlow, webinarId, startTime, teacherName, webinarUrl);
+            }, false);
+            document.getElementById('otp-resend-btn').addEventListener('click', self.resendOtp.bind(self, webinarId), false);
+            document.getElementById('otp-input-field').addEventListener('focus', function() {
+                document.getElementsByClassName('top-popup-theme')[0].classList.remove('incorrect-otp');
+            }, false);
+            document.getElementById('otp-input-field').addEventListener('keyup', function(e) {
+                e.which = e.which || e.keyCode;
+                    if(e.which == 13) {
+                        // console.log('enter key');
+                        self.checkOtp.call(self, e, params, postRegistrationFlow, webinarId, startTime, teacherName, webinarUrl);
+                    } else {
+                        document.getElementsByClassName('top-popup-theme')[0].classList.remove('incorrect-otp');
+                    }
+            }, false);
+        },
+        alreadyUsed: function(data) {
+            var message = data.value;
+            var type = data.type;
+            if(type && type === 'PHONE_REGISTERED') {
+                message = 'Number already in use with a different email ID (' + message + '). To continue please use the same email ID or register as a new user by using a different mobile number.'
+            } else {
+                message = 'Email already in use with a different mobile number (' + message + '). To continue please use the same mobile number or register as a new user by using a different email ID.'
+            }
+            document.getElementById('modal-inside-html-content').innerHTML = '';
+            document.getElementById('modal-inside-html-content').innerHTML = '<h3 style="margin:  0px;margin-bottom: -6px;">Registration Error!</h3><p style="margin-bottom: 35px;">'+ message + '</p><a href="" id="close-modal-alreadyUsed">Okay</a>';
+            var elem = document.getElementById('close-modal-alreadyUsed');
+            window.exposedMdules.minimalModal.openModal();
+            elem.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.exposedMdules.minimalModal.closeModal();
+                document.location.reload();
+            })
+        },
+        registerStudent: function(e, otpRequired, fromModal, postRegistrationFlow, gradeExists, userData, noCookies, webinarId, startTime, teacherName, webinarUrl, fromListing,
+            clickedWebinarTargets, clickedWebinarTitle, clickedWebinarSubjects, clickedWebinarGrades, clickedWebinarBoards, clickedWebinarTeacher, clickedWebinarType, clickedWebinarId) {
+            if(e) e.preventDefault();
+            var gradeForFloodLight;
+            var self = this;
+            var params = {
+                firstName: userData && userData.firstName,
+                email: userData && userData.email,
+                contactNumber: userData && userData.contactNumber,
+                phoneCode: userData && userData.phoneCode,
+            }
+            if(!gradeExists) {
+                var gradeNotSelected = document.getElementById("studentGrade").innerText === 'Grade' ? true: false;
+                var grade = document.getElementById('studentGrade').innerText;
+                var newGrades= [{"key":"Grade 1st (Completed Kinder Garden)", "value":"1"}, {"key":"Grade 2nd (Completed Grade 1st)", "value":"2"}, {"key":"Grade 3rd (Completed Grade 2nd)", "value":"3"}, {"key":"Grade 4th (Completed Grade 3rd)", "value":"4"}, {"key":"Grade 5th (Completed Grade 4th)", "value":"5"}, {"key":"Grade 6th (Completed Grade 5th)", "value":"6"}, {"key":"Grade 7th (Completed Grade 6th)", "value":"7"}, {"key":"Grade 8th (Completed Grade 7th)", "value":"8"}, {"key":"Grade 9th (Completed Grade 8th)", "value":"9"}, {"key":"Grade 10th (Completed Grade 9th)", "value":"10"}, {"key":"Grade 11th (Completed Grade 10th)", "value":"11"}, {"key":"Grade 12th (Completed Grade 11th)", "value":"12"}, {"key":"Completed Grade 12th", "value":"13"}];
+                if(grade === 'Dropper') {
+                    grade = '13';
+                }
+                var result = newGrades.filter(obj => {
+                    return obj.key === grade
+                  });
+                if(result.length>0){
+                    grade=result[0].value;
+                }
+                gradeForFloodLight = grade;
+                if(gradeNotSelected) {
+                    setTimeout(function() {
+                        document.querySelector("#grade-error-label").style.display = "none";
+                    }, 2500);
+                    document.querySelector("#grade-error-label").style.display = "block";
+                    return;
+                }
+                params.grade = grade;
+            } 
+            // var email = document.getElementById('studentEmail').value;
+            // var isEmailValid = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$/.test(email);
+            // if(!isEmailValid) {
+            //     setTimeout(function() {
+            //         document.querySelector("#email-error-label").style.display = "none";
+            //     }, 3000);
+            //     document.querySelector("#email-error-label").style.display = "block";
+            //     return;
+            // }
+            params.webinarId = webinarId || window.exposedVariables.webinarId;
+            params.clevarTapId = window.clevertap && window.clevertap.getCleverTapID && window.clevertap.getCleverTapID();
+            
+            // if(otpRequired) {
+            // params.otpVerificationRequired = true;
+            // }
+            var utmParams = this.getUtmParams();
+            for(var param in utmParams) {
+                if (utmParams.hasOwnProperty(param)) {
+                    params[param] = utmParams[param];
+                }
+            }
+            this.showLoader();
+            var url = formSubSystemUrl("growth","/cms/webinar/register");
+            ajax(url, "POST", params, true, function(resp) {
+                self.hideLoader();
+                resp = JSON.parse(resp);
+                var status = resp.status;
+                // if(noCookies) {
+                //     window.location.reload();
+                // }
+                if(fromModal) {
+                    document.getElementById('popup-grade-overlay').classList.add('is-hidden');
+                    document.querySelector('body').classList.remove('body-no-scroll');
+                    console.log('hide register modal');
+                }
+                switch(status) {
+                    // case 'PHONE_REGISTERED':
+                    //     self.alreadyUsed({value: resp.statusMessage, type: status});
+                    // break;
+                    // case 'EMAIL_REGISTERED':
+                    //     self.alreadyUsed({value: resp.statusMessage, type: status});
+                    // break;
+                    // case 'OTP_VERIFICATION_PENDING':
+                    //     self.showOtpDialog(params, postRegistrationFlow, webinarId, startTime, teacherName, webinarUrl);
+                    // break;
+                    case 'ALREADY_REGISTERED':
+                        // document.querySelector('.registeration-done-text').innerText = 'Great! You are already registered for this webinar.';
+                        self.hideAskQuestion();
+                        postRegistrationFlow(resp, params, webinarId, startTime, teacherName, webinarUrl, webinarUrl);
+                    break;
+                    case 'CONFIRMED':
+                        var event = new Event('registered-for-webinar');
+                        if(fromListing){
+                            self.dispatchFloodlightEvent(clickedWebinarTitle, window.exposedVariables.grade || userData.grade || gradeForFloodLight || null, clickedWebinarSubjects);
+                        }
+                        self.dispatchMoengageWebinarRegisterEvent(clickedWebinarTitle, clickedWebinarId,
+                            clickedWebinarSubjects, clickedWebinarGrades, clickedWebinarBoards, clickedWebinarTeacher || teacherName, clickedWebinarType, clickedWebinarTargets, userData);
+                        window.dispatchEvent(event);
+                        postRegistrationFlow(resp, params, webinarId, startTime, teacherName, webinarUrl, webinarUrl);
+                    break;
+                    default:
+                    break;
+        
+                }
+            }, function(err) {
+                self.hideLoader();
+            });
+        },
+        dispatchMoengageWebinarRegisterEvent: function (webinarTitle, webinarId, webinarSubjects, webinarGrades , webinarBoards, teacherName, webinarType, webinarTargets, userData) {
+            try {
+                var webinarDetails = (!!window.webinarPage && window.webinarPage) || (!!window.exposedVariables && window.exposedVariables) || {};
+                !!MoEngageVedantu && MoEngageVedantu.track_event('Webinar_Registered', {
+                    'Name': (!!userData && userData.firstName) || null,
+                    'Title': webinarDetails.webinarName || webinarDetails.title || webinarTitle || null,
+                    'ID': webinarDetails.id || webinarDetails.webinarId || webinarId || null,
+                    'Grade': webinarDetails.webinarGrades || webinarDetails.grades || webinarGrades || null,
+                    'Subject': webinarDetails.webinarSubjects || webinarDetails.Subjects || webinarSubjects || null,
+                    'Teacher': webinarDetails.webinarTeacher || teacherName || (!!webinarDetails.teacherInfo && webinarDetails.teacherInfo.name) || null,
+                    'Board': webinarDetails.webinarBoards || webinarDetails.boards || webinarBoards || null,
+                    'Target': webinarDetails.webinarTargets || webinarDetails.targets || webinarTargets || null,
+                    'Type': webinarDetails.webinarToolType || webinarDetails.toolType || webinarType || null
+                });
+            } catch (err) {
+                console.log("could not send moengage events " + err);
+            }
+        },
+        dispatchFloodlightEvent: function(clickedWebinarTitle, userGrade, webinarSubjects){
+            var webinarRegisteredFloodLightObject={};
+            webinarRegisteredFloodLightObject['title'] = clickedWebinarTitle;
+            webinarRegisteredFloodLightObject['grade'] = userGrade;
+            webinarRegisteredFloodLightObject['subjects'] = webinarSubjects;
+            
+            var floodLightCustomEvent = new CustomEvent('webinar-registered-floodLight',{
+                detail:webinarRegisteredFloodLightObject
+            })
+            
+            window.dispatchEvent(floodLightCustomEvent);
+        },
+        showGradeModal: function() {
+
+        },
+        hideAskQuestion: function() {
+            document.querySelector('#registration-modal-interaction .what-next-box') && document.querySelector('#registration-modal-interaction .what-next-box').classList.add('hidden');            
+        },
+        checkOtpCondition: function(e, fromModal, postRegistrationFlow, gradeExists, userData, noCookies, webinarId, startTime, teacherName, webinarUrl, fromListing, 
+            clickedWebinarTargets, clickedWebinarTitle, clickedWebinarSubjects, clickedWebinarGrades, clickedWebinarBoards, clickedWebinarTeacher, clickedWebinarType, clickedWebinarId) {
+            e && e.preventDefault();
+            // var urlParams = this.getAllUrlParams();
+            // var otpRequired = this.checkParam('otpRequired', urlParams);
+            // if(otpRequired === 'true') {
+            //     this.registerStudent(null, true, fromModal, postRegistrationFlow, webinarId, startTime, teacherName, webinarUrl);
+            // } else {
+            this.registerStudent(null, null, fromModal, postRegistrationFlow, gradeExists, userData, noCookies, webinarId, startTime, teacherName, webinarUrl, fromListing,
+                clickedWebinarTargets, clickedWebinarTitle, clickedWebinarSubjects, clickedWebinarGrades, clickedWebinarBoards, clickedWebinarTeacher, clickedWebinarType, clickedWebinarId);
+            // }
+        },
+        showPostRegistrationDialog: function(phone, webinarId, fromListing, webinarUrl) {
+            var mc_name = webinarUrl;
+            if(document.getElementById('registration-overlay').classList.contains('pre-webinar-over')) {
+                return;
+            } else {
+                var studentQuestionBox = document.querySelector('.student-input-field');
+                if(studentQuestionBox && studentQuestionBox.value) {
+                    studentQuestionBox.value = '';
+                }
+                document.getElementById('registration-overlay').classList.remove('is-hidden');
+                document.querySelector('body').classList.add('body-no-scroll');
+                document.getElementById('registration-modal-interaction').classList.remove('hidden');
+                document.getElementById('close-registration-modal').addEventListener('click', function(evt) {
+                    if(fromListing) {
+                        // window.open
+                        var newUrl = window.location.origin + window.location.pathname;
+                        if (window.location.pathname != '/masterclass/' || window.location.pathname != '/masterclass') {
+                            if (window.location.pathname == "/") {
+                                newUrl = newUrl + 'masterclass/';
+                            } else if (window.location.pathname == "") {
+                                newUrl = newUrl + '/masterclass/';
+                            }
+                        }
+                        if(newUrl[newUrl.length - 1] !== '/') {
+                            newUrl = newUrl + '/';
+                        }
+                        newUrl = newUrl + webinarUrl;
+                        if(window.location.pathname == "/" || window.location.pathname == ""){
+                            newUrl = newUrl + "?utm_source=seo&utm_medium=seo_hp&utm_campaign=seo_hp-masterclass&utm_content=homepage_tiles&utm_term=seo_hp_list_masterclass";
+                        } else if (!!window.location.search) {
+                            newUrl = newUrl + window.location.search;
+                        }
+                        window.open(newUrl, '_blank');
+                    }
+                    document.getElementById('registration-overlay').classList.add('is-hidden');
+                    document.querySelector('body').classList.remove('body-no-scroll');
+                    document.location.reload();
+                });
+                document.getElementById('post-register-ask-question').addEventListener('click', function(evt) {
+                    var data = document.querySelector('.student-input-field').value;
+                    if(data) {
+                        params = {
+                            question: data,
+                            phone: phone,
+                            webinarId: webinarId || window.exposedVariables.webinarId
+                        }
+                        var url = formSubSystemUrl('growth','/cms/webinar/addQuestionToRegistration');
+                        webinarCommon.showLoader();
+                        ajax(url, "POST", params, true, function(resp) {
+                            webinarCommon.hideLoader();
+                            resp = JSON.parse(resp);
+                            if(resp && resp.status === 'CONFIRMED') {
+                                webinarCommon.clevertapObj.trackEvent('webinar_question_submit', {type: 'post_webinar_registration', webinarId: window.exposedVariables.webinarId });
+                                document.getElementById('registration-modal-interaction').classList.add('hidden');
+                                document.getElementById('registration-modal-thanking').classList.remove('hidden');
+                            } else  {
+                                webinarCommon.hideLoader();
+                            }
+                        }, function(err) {
+                            webinarCommon.hideLoader();
+                        });
+
+                        try {
+                            var customObj = {};
+                            customObj["key1"] = "mc_name";
+                            customObj["value1"] = mc_name;
+                            customObj["key2"] = "mc_id";
+                            customObj["value2"] = webinarId || window.exposedVariables.webinarId;
+                            customObj["key3"] = "question_text";
+                            customObj["value3"] = data;
+                            var clickStreamLabel = !!window.exposedVariables.webinarId ? "mc_listing_question_submit" : "mc_question_submit";
+                            !!clickStream && clickStream.pushEvent("master_class", "CLICK", clickStreamLabel, null, customObj);
+                        } catch (error) {
+                        }
+                    } 
+                });
+            }
+        },
+        elementVisibleInViewPort: function(el) {
+            if (!!el) {
+                var top = el.offsetTop;
+                var left = el.offsetLeft;
+                var width = el.offsetWidth;
+                var height = el.offsetHeight;
+        
+                while (el.offsetParent) {
+                    el = el.offsetParent;
+                    top += el.offsetTop;
+                    left += el.offsetLeft;
+                }
+        
+                return (
+                    top < (window.pageYOffset + window.innerHeight) &&
+                    top > (window.pageYOffset) &&
+                    left < (window.pageXOffset + window.innerWidth) &&
+                    (top + height) < (window.pageYOffset + window.innerHeight) &&
+                    (top + height) > window.pageYOffset &&
+                    (left + width) > window.pageXOffset
+                );
+            } else {
+                return false;
+            }
+        },
+        isMobile: function() {
+            var check = false;
+            (function (a, b) {
+                if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4)))
+                    check = true
+            })(navigator.userAgent || navigator.vendor || window.opera);
+            return check;
+        },
+        setWebinarCookie: function(resp) {
+            var studentPhone = this.vCookies.getItem('studentPhone');
+            var webinarId = this.checkWebinarCookie(resp.webinarId);
+            if(!studentPhone && !webinarId){
+                this.vCookies.setItem('studentPhone', resp.phone, null, '/masterclass');
+                this.updateWebinarCookie(resp.webinarId);
+            } else if(!studentPhone || studentPhone !== resp.phone ){
+                this.vCookies.removeItem('registeredWebinars');
+                this.vCookies.setItem('studentPhone', resp.phone, null, '/masterclass');
+                this.createWebinarCookie();                
+                this.updateWebinarCookie(resp.webinarId);                                
+            } else if(!webinarId){
+                this.updateWebinarCookie(resp.webinarId);
+            }
+        },
+        checkWebinarCookie: function(webinarId) {
+            var webinars = JSON.parse(this.vCookies.getItem('registeredWebinars'));
+            if(webinars && webinars.w_id.length>0){
+                for(var i=0; i<webinars.w_id.length; i++){
+                    if(webinars.w_id[i] === webinarId){
+                        return true;
+                        break;
+                    }
+                }
+            }else{
+                this.createWebinarCookie();
+            }
+            return false;
+        },
+        createWebinarCookie: function(){
+            var webinarInfo = {
+                w_id: []
+            };
+            this.vCookies.setItem('registeredWebinars', JSON.stringify(webinarInfo), null, '/masterclass');
+        },
+        updateWebinarCookie: function(webinarId){
+            var webinars = JSON.parse(this.vCookies.getItem('registeredWebinars'));
+            webinars.w_id.push(webinarId);
+            this.vCookies.setItem('registeredWebinars', JSON.stringify(webinars), null, '/masterclass');            
+        }
+    }
+    var dateFormatter = {
+         digitPercisionString: function (digit, point) {
+            digit = digit.toString();
+            if (digit.length < point) {
+                var pre = "";
+                for (var i = digit.length; i < point; i++) {
+                    pre += "0";
+                }
+                digit = pre + digit;
+            } else if (digit.length > point) {
+                digit = parseFloat(digit).toPrecision(point);
+            }
+            return digit;
+        },
+        locale: {
+            en: {
+                month_names: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                    'October', 'November', 'December'],
+                month_names_short: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            }
+        },
+        Days: {
+            shortForm: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            longForm: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        },
+        getOrdinal: function (number, appendWithNumber) {
+            appendWithNumber = (typeof appendWithNumber !== 'undefined') ? appendWithNumber : true;
+            var s = ["th", "st", "nd", "rd"],
+                v = number % 100;
+            return (appendWithNumber ? number : "") + (s[(v - 20) % 10] || s[v] || s[0]);
+        },
+        parseFormatDate: function (dateTime, lang) {
+            lang = lang ? lang : "en";
+            dateTime = parseInt(dateTime, 10);
+            if (!dateTime || dateTime < 0) {
+                return;
+            }
+            var obj = {};
+            //DD/MM/YYYY HH:min TT
+            var date = new Date(dateTime);
+            obj["dd"] = date.getDate();
+            obj["dayLong"] = this.Days.longForm[date.getDay()];
+            obj["dayShort"] = this.Days.shortForm[date.getDay()];
+            obj["ord"] = this.getOrdinal(date.getDate(), false);
+            obj["MM"] = this.locale[lang].month_names[date.getMonth()];
+            obj["mmm"] = this.locale[lang].month_names_short[date.getMonth()];
+            obj["mm"] = this.digitPercisionString(date.getMonth() + 1, 2);
+            obj["yyyy"] = date.getFullYear();
+            obj["yy"] = date.getFullYear().toString().substr(2);
+            obj["hrs"] = date.getHours();
+            obj["hrh"] = (date.getHours() === 12 ? 12 : date.getHours() % 12);
+            obj["min"] = this.digitPercisionString(date.getMinutes(), 2);
+            obj["sec"] = this.digitPercisionString(date.getSeconds(), 2);
+            obj["mdn"] = date.getHours() >= 12 ? "PM" : "AM";
+            return obj;
+        },
+        formatDate: function(dateTime, format, lang) {
+            var data = this.parseFormatDate(dateTime, lang);
+            if (data) {
+                Object.keys(data).map((value, key) => {
+                    format = format.replace(value, data[value]);
+                });
+                return format;
+            }
+            return "";
+        }
+    }
+    window.webinarCommon = webinarCommon;
+    window.dateFormatter = dateFormatter;
+})();

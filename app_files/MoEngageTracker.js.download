@@ -1,0 +1,637 @@
+(function (document, window) {
+
+    var MoEngageVedantu = function () {
+        var MOENGAGE_APP_ID = !!window && !!window.config && !!window.config.moengage && window.config.moengage.appId;
+        var ANALYTICS_KEY = "MOE_STORAGE_DATA";
+        var USER_ATTRIBUTE_STORAGE_KEY = "MOE_USER_ATTRIBUTE_STORAGE_DATA";
+        var SYNCH_TIME = 300;
+        var UA_SYNCH_TIME = 300;
+        var localAnalyticsData = null;
+        var localUAData = [];
+        var timerObj = null;
+        var uaTimerObj = null;
+        var timeoutObj = null;
+        var isDataSynchInProgress = false;
+        var userAttributesSyncInProgress = false;
+        var dataSynchedOnPageLoad = false;
+        var uaSynchedOnPageLoad = false;
+        var userDataFromDataLayer = null;
+        var isMoELoaded = false;
+        var sessionData = !!window.vedantuSessionData ? window.vedantuSessionData : null;
+        var isProductionDebugLog = (!!window.config && window.config.mode == "PROD") ? 0 : 1;
+        var isAVSKPage = false;
+        var isUnderDelay = false; //for delaying events to send to moe from user logins in till moe identifies its exiting user in their DB. random time of 2min
+
+        var VSKUrls = [
+            '/superkids', '/superkids/',
+            '/supercoders', '/supercoders/',
+            '/superreaders', '/superreaders/',
+            '/earlylearning', '/earlylearning/',
+            '/superkids/course', '/superkids/course/',
+            '/supercoders/course', '/supercoders/course/',
+            '/superkids/faqs', '/superkids/faqs/',
+            '/supercoders/faqs', '/supercoders/faqs/',
+            '/superkids/lil-champs', '/superkids/lil-champs/',
+            '/supercoders/lil-champs', '/supercoders/lil-champs/',
+            '/superkids/yong-learners', '/superkids/yong-learners/',
+            '/supercoders/yong-learners', '/supercoders/yong-learners/',
+            '/superkids-early-achive', '/superkids-early-achive/',
+            '/superkids/superteacher', '/superkids/superteacher/',
+            '/supercoders/superteacher', '/supercoders/superteacher/',
+            '/superkids/pro-coders', '/superkids/pro-coders/',
+            '/supercoders/pro-coders', '/supercoders/pro-coders/',
+            '/superkids/freetrial', '/superkids/freetrial/',
+            '/supercoders/freetrial', '/supercoders/freetrial/',
+            '/superreaders/gliding-readers', '/superreaders/gliding-readers/',
+            '/superreaders/soaring-readers', '/superreaders/soaring-readers/',
+            '/superreaders/democertificate', '/superreaders/democertificate/',
+            '/superkids/courses', '/superkids/courses/',
+            '/supercoders/courses', '/supercoders/courses/',
+            '/superkids/courses/1-2', '/superkids/courses/1-2/',
+            '/supercoders/courses/1-2', '/supercoders/courses/1-2/',
+            '/superkids/courses/3-4', '/superkids/courses/3-4/',
+            '/supercoders/courses/3-4', '/supercoders/courses/3-4/',
+            '/superkids/courses/5-6', '/superkids/courses/5-6/',
+            '/supercoders/courses/5-6', '/supercoders/courses/5-6/',
+            '/superkids/courses/7-8', '/superkids/courses/7-8/',
+            '/supercoders/courses/7-8', '/supercoders/courses/7-8/',
+            '/superreaders/freetrial','/superreaders/freetrial/',
+            '/superreaders/stories/king-ring','/superreaders/stories/king-ring/',
+            '/superreaders/stories/the-intelligent-cook','/superreaders/stories/the-intelligent-cook/',
+            '/superreaders/stories/yogi-learns-yoga','/superreaders/stories/yogi-learns-yoga/',
+            '/superreaders/stories/the-buzzing-bees','/superreaders/stories/the-buzzing-bees/',
+            '/superreaders/stories/iggy-the-iguana','/superreaders/stories/iggy-the-iguana/'
+        ];
+
+        if (VSKUrls.indexOf(window.location.pathname) >= 0) {
+            isAVSKPage = true;
+            MOENGAGE_APP_ID = !!window && !!window.config && !!window.config.moengage && window.config.moengage.vskAppId;
+        }
+
+        if (!!window.vedantuSessionData) {
+            delete window.vedantuSessionData;
+        }
+
+        var getCookieValue = function (name) {
+            /**
+             * @description- To get the cookie value.
+             * @returns {string | null}- returns the cookie value if present or returns null.
+             */
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+            if (parts.length == 2) return parts.pop().split(";").shift();
+            return null;
+        };
+
+        var addUserAttribute = function (attributeName, attributeValue, attributeType) {
+            /**
+             * @description- This function adds a user attribute to Moengage. Exposed outside function. Can be used by MoEngageVedantu.addUserAttribute.
+             * @param {string} attributeName- This is the attribute name. This param is required. If not valid or absent, user attribute will not be added.
+             * @param {string} attributeValue- This is the attribute value. This param is required.
+             * @returns {undefined}
+             */
+            try {
+                if (!!MOENGAGE_APP_ID && !!Moengage && attributeValue != null && attributeValue != undefined) {
+                    localUAData.push({ type: !!attributeType ? attributeType : "aua", name: attributeName, value: attributeValue });
+                    syncUserAttributesInit();
+                }
+            } catch (err) {
+                console.log("moengage something went wrong " + err);
+            }
+        };
+
+        var addData = function (dataEvent, dataCustomObj) {
+            /**
+             * @description- This function adds data to localAnalyticsData and localStorage. This function also appends the UTM parameters to the event
+             *               object(dataCustomObj) from URL and Cookies.
+             * @param {string} dataEvent- This is the event name. This param is required. If not valid or absent, event will not be sent to Moengage.
+             * @param {object} dataCustomObj- This is the event values/attributes.
+             * @returns {undefined}
+             */
+            try {
+                if (!!MOENGAGE_APP_ID && !!dataEvent) {
+
+                    dataCustomObj = !!dataCustomObj ? dataCustomObj : {};
+
+                    localAnalyticsData = !!localAnalyticsData && !!localAnalyticsData.length ? localAnalyticsData : [];
+                    if (typeof dataCustomObj == "object" && Object.keys(dataCustomObj).length > 0) {
+                        var pageUrlQueryParams = !!window && !!window.queryParamModule && window.queryParamModule.getAllUrlParams();
+                        var cookieUtms = getCookieValue("utmParams");
+                        if (!!cookieUtms) {
+                            cookieUtms = window.JSON.parse(decodeURIComponent(cookieUtms));
+                        }
+
+                        if (!!pageUrlQueryParams && !!pageUrlQueryParams.doubtApp) {
+                            dataCustomObj.fromApp = true;
+                        } else {
+                            dataCustomObj.fromApp = false;
+                        };
+
+                        dataCustomObj.utm_campaign = (!!pageUrlQueryParams && !!pageUrlQueryParams.utm_campaign && pageUrlQueryParams.utm_campaign)
+                            || (!!cookieUtms && !!cookieUtms.utm_campaign && cookieUtms.utm_campaign) || null;
+                        dataCustomObj.utm_source = (!!pageUrlQueryParams && !!pageUrlQueryParams.utm_source && pageUrlQueryParams.utm_source)
+                            || (!!cookieUtms && !!cookieUtms.utm_source && cookieUtms.utm_source) || null;
+                        dataCustomObj.utm_medium = (!!pageUrlQueryParams && !!pageUrlQueryParams.utm_medium && pageUrlQueryParams.utm_medium)
+                            || (!!cookieUtms && !!cookieUtms.utm_medium && cookieUtms.utm_medium) || null;
+                        dataCustomObj.utm_content = (!!pageUrlQueryParams && !!pageUrlQueryParams.utm_content && pageUrlQueryParams.utm_content)
+                            || (!!cookieUtms && !!cookieUtms.utm_content && cookieUtms.utm_content) || null;
+                        dataCustomObj.utm_term = (!!pageUrlQueryParams && !!pageUrlQueryParams.utm_term && pageUrlQueryParams.utm_term)
+                            || (!!cookieUtms && !!cookieUtms.utm_term && cookieUtms.utm_term) || null;
+                    }
+                    var data = { moe_event_name: dataEvent, moe_event_customobj: dataCustomObj };
+                    localAnalyticsData.push(data);
+                    !!window && !!window.localStorage && window.localStorage.setItem(ANALYTICS_KEY, window.JSON.stringify(localAnalyticsData));
+                    if (!!timerObj) {
+                        clearInterval(timerObj);
+                    };
+                    if (!!timeoutObj) {
+                        clearTimeout(timeoutObj);
+                    };
+                    timeoutObj = setTimeout(function () {
+                        syncDataInit();
+                    }, 350);
+                }
+            } catch (err) {
+                console.log("something went wrong adding data moengage", err);
+            }
+        };
+
+        var getData = function () {
+            /**
+             * @description- This function gets data from localStorage on page load.
+             * @returns {object}- returns localStorage data as on object.
+             */
+            var analyticsData = null;
+            var analyticsData = window.localStorage.getItem(ANALYTICS_KEY);
+            if (!!analyticsData) {
+                analyticsData = window.JSON.parse(analyticsData);
+            }
+            return analyticsData;
+        };
+
+        var getUAData = function () {
+            /**
+             * @description- This function gets data from localStorage on page load.
+             * @returns {object}- returns localStorage data as on object.
+             */
+            var uaData = null;
+            var uaData = window.localStorage.getItem(USER_ATTRIBUTE_STORAGE_KEY);
+            if (!!uaData) {
+                uaData = window.JSON.parse(uaData);
+            }
+            return uaData;
+        };
+
+        var synchDataToMoEngage = function () {
+            /**
+             * @description- This function is used to sync data to Moengage.
+             * @returns {undefined}
+             */
+            try {
+                if (isDataSynchInProgress || isUnderDelay) {
+                    return;
+                }
+                var synchData = null;
+                if (localAnalyticsData && localAnalyticsData.length > 0 && !isDataSynchInProgress && isMoELoaded) {
+                    isDataSynchInProgress = true;
+                    synchData = localAnalyticsData[0];
+                    var newCustomObj = {};
+                    Object.keys(synchData.moe_event_customobj).forEach(function (key) {
+                        var keyValue = synchData.moe_event_customobj[key];
+                        if (keyValue !== null) {
+                            if (typeof (keyValue) == 'object') {
+                                newCustomObj[key] = keyValue || null;
+                            } else {
+                                newCustomObj[key] = String(synchData.moe_event_customobj[key]) || null;
+                            }
+                        };
+                    });
+                    try {
+                        !!Moengage && Moengage.track_event(synchData.moe_event_name, newCustomObj).then(function (resp) {
+                            localAnalyticsData.splice(0, 1);
+                            window.localStorage.setItem(ANALYTICS_KEY, window.JSON.stringify(localAnalyticsData));
+                            isDataSynchInProgress = false;
+                        }).catch(function (err) {
+                            isDataSynchInProgress = false;
+                        });
+                    } catch (err) {
+                        isDataSynchInProgress = false;
+                        console.log("moengage something went wrong " + err);
+                    }
+                };
+            } catch (err) {
+                console.log("moengage something went wrong " + err);
+            }
+        };
+
+        var syncUserAttributesToMoEngage = function () {
+            /**
+             * @description- This function is used to sync data to Moengage.
+             * @returns {undefined}
+             */
+            try {
+                if (userAttributesSyncInProgress) {
+                    return;
+                }
+                var uaData = null;
+                if (localUAData && localUAData.length > 0 && !userAttributesSyncInProgress && isMoELoaded) {
+                    userAttributesSyncInProgress = true;
+                    uaData = localUAData[0];
+                    try {
+                        var uaPromise;
+                        if (uaData.type == "aua") {
+                            uaPromise = Moengage.add_user_attribute(uaData.name, uaData.value)
+                        } else if (uaData.type == "uuui") {
+                            uaPromise = Moengage.update_unique_user_id(uaData.value)
+                        } else if (uaData.type == "auui") {
+                            uaPromise = Moengage.add_unique_user_id(uaData.value)
+                        } else if (uaData.type == "afn") {
+                            uaPromise = Moengage.add_first_name(uaData.value)
+                        } else if (uaData.type == "aln") {
+                            uaPromise = Moengage.add_last_name(uaData.value)
+                        } else if (uaData.type == "am") {
+                            uaPromise = Moengage.add_mobile(uaData.value)
+                        } else if (uaData.type == "ae") {
+                            uaPromise = Moengage.add_email(uaData.value)
+                        }
+                        if (!!uaPromise) {
+                            uaPromise.then(function (resp) {
+                                localUAData.splice(0, 1);
+                                window.localStorage.setItem(USER_ATTRIBUTE_STORAGE_KEY, window.JSON.stringify(localUAData));
+                                userAttributesSyncInProgress = false;
+                            }).catch(function (err) {
+                                userAttributesSyncInProgress = false;
+                            })
+                        } else {
+                            localUAData.splice(0, 1);
+                            window.localStorage.setItem(USER_ATTRIBUTE_STORAGE_KEY, window.JSON.stringify(localUAData));
+                            userAttributesSyncInProgress = false;
+                        }
+                    } catch (err) {
+                        userAttributesSyncInProgress = false;
+                        console.log("moengage something went wrong " + err);
+                    }
+                } else if(localUAData && localUAData.length == 0){
+                    clearInterval(uaTimerObj);
+                };
+            } catch (err) {
+                console.log("moengage something went wrong " + err);
+            }
+        };
+
+
+        var MoEngageInitSetup = function () {
+            /**
+             * @description- Main MoEngage function for Moengage initialization and setting user attributes based on loggedIn or not.
+             * @returns {undefined}
+             */
+            if (!!MOENGAGE_APP_ID) {
+                function setDataLayerData(e) {
+                    userDataFromDataLayer = e;
+                };
+
+                var isLoggedIn = !!getCookieValue("X-Ved-Token");
+
+                function resetData() {
+                    userDataFromDataLayer = null;
+                    dataSynchedOnPageLoad = false;
+                    isDataSynchInProgress = false;
+                    localAnalyticsData = null;
+                    window.localStorage.removeItem(ANALYTICS_KEY);
+                    window.localStorage.removeItem(USER_ATTRIBUTE_STORAGE_KEY);
+                    window.localStorage.removeItem("VSKLoginMoEDelay");
+                }
+
+                if (!isLoggedIn) {
+                    resetData();
+                }
+
+                // When MoEngage is LIVE for first time, to register already logged in users to MoEnagage
+                window.removeEventListener('dataLayerLoaded', setDataLayerData, true);
+                window.addEventListener('dataLayerLoaded', setDataLayerData, true);
+
+                window.addEventListener('MOE_LIFECYCLE', function (event) {
+                    if (event.detail.name == "SETTINGS_FETCHED") {
+                        var moengageLocalStorageData = Moengage.vitals();
+                        var moengageStoredUserId = null;
+                        var isMoEngageLoggedIn = false;
+                        var attributes = moengageLocalStorageData.userDetails.attributes;
+
+                        function destroyUserEntityMoEngage(cb) {
+                            try {
+                                Moengage.destroy_session().then(function (resp) {
+                                    resetData();
+                                    if (typeof cb == "function" && !!cb) {
+                                        cb();
+                                    }
+                                });
+                            } catch (err) {
+                                console.log("moengage something went wrong " + err);
+                            }
+                        }
+
+                        function updateChangedUserAttributes(sessionDataUpdate) {
+
+                            var userAttributesSubList1 = ["grade", "board", "target", "examTargets", "parentContactNumber", "parentFirstName", "parentLastName"];
+                            var userAttributesSubList2 = ["isContactNumberVerified", "locationInfo", "role", "phoneCode", "isEmailVerified", "parentEmails"];
+
+                            //Just sending data if url changes from VSK to Non VSK and visa-versa
+                            var prevPageUrl = document.referrer;
+                            var currentPageUrl = window.location.pathname;
+                            if (!!prevPageUrl) {
+                                prevPageUrl = prevPageUrl.split("?")[0];
+                                prevPageUrl = prevPageUrl.replace(window.location.origin, "");
+                            }
+                            var sendUAtoMoe = !prevPageUrl ? true : false;
+
+                            if (!sendUAtoMoe && VSKUrls.indexOf(prevPageUrl) < 0 && VSKUrls.indexOf(currentPageUrl) > 0) {
+                                sendUAtoMoe = true;
+                            } else if (!sendUAtoMoe && VSKUrls.indexOf(prevPageUrl) > 0 && VSKUrls.indexOf(currentPageUrl) < 0) {
+                                sendUAtoMoe = true;
+                            }
+
+                            for (var index = 0; index < attributes.length; index++) {
+                                if (userAttributesSubList1.indexOf(attributes[index].key) < 0) {
+                                    // if (((sessionDataUpdate && sessionDataUpdate[attributes[index].key]) || null) && (sessionDataUpdate && sessionDataUpdate[attributes[index].key] != attributes[index].value)) {
+                                    //     Moengage.add_user_attribute(attributes[index].key, sessionDataUpdate[attributes[index].key] || null);
+                                    // }
+                                    if (sendUAtoMoe && sessionDataUpdate && attributes[index].key in sessionDataUpdate) {
+                                        addUserAttribute(attributes[index].key, attributes[index].key in sessionDataUpdate ? sessionDataUpdate[attributes[index].key] : null);
+                                    }
+                                } else {
+                                    var newValue = null;
+                                    newValue = attributes[index].key in sessionDataUpdate ? sessionDataUpdate[attributes[index].key]
+                                        : (sessionDataUpdate.studentInfo && attributes[index].key in sessionDataUpdate.studentInfo ? sessionDataUpdate.studentInfo[attributes[index].key] : null);
+                                    // if (newValue && newValue != attributes[index].value) {
+                                    //     Moengage.add_user_attribute(attributes[index].key, newValue || null);
+                                    // }
+                                    if (sendUAtoMoe && newValue) {
+                                        addUserAttribute(attributes[index].key, newValue || null);
+                                    }
+                                }
+                            }
+
+                            if (!!sendUAtoMoe) {
+                                addUserAttribute(null, sessionDataUpdate.firstName || null, "afn");
+                                addUserAttribute(null, sessionDataUpdate.lastName || null, "aln");
+                                addUserAttribute(null, String(!!sessionDataUpdate.phoneCode ? sessionDataUpdate.phoneCode : "91") + sessionDataUpdate.contactNumber, "am");
+                                addUserAttribute(null, sessionDataUpdate.email || null, "ae");
+                                checkPaidUserOrNot(true);
+                            } else {
+                                checkPaidUserOrNot();
+                            }
+                        };
+                        function disableAPIForWindow() {
+                            var disableAPI = false;
+                            var currentTime = new Date().getTime();
+                            disableAPI = (window.config.apiBlockWindow && window.config.apiBlockWindow.start <= currentTime && window.config.apiBlockWindow.end >= currentTime);
+                            return disableAPI;
+                        };
+
+                        function checkPaidUserOrNot(sendAnyWay) {
+                            if (disableAPIForWindow()) {
+                                return;
+                            }
+                            var ajaxModule = (!!window && window.ajaxModule) || (!!window && !!window.exposedMdules && window.exposedMdules.ajaxModule);
+                            var paidUserMoeValue;
+                            attributes.forEach(attribute => {
+                                if(attribute.key == "paidUser"){
+                                    paidUserMoeValue = attribute.key;
+                                }
+                            });
+                            if (!!ajaxModule && !!ajaxModule.formSubSystemPath && !!ajaxModule.ajax && (sendAnyWay || !paidUserMoeValue)) {
+                                var url = ajaxModule.formSubSystemPath('dinero', '/account/checkAnyPreviousOrders');
+                                ajaxModule.ajax(url, 'GET', null, null, function (response) {
+                                    var resp = JSON.parse(response);
+                                    if ((paidUserMoeValue != (!resp.success)) || sendAnyWay) {
+                                        addUserAttribute("paidUser", !resp.success);
+                                    }
+                                });
+                            }
+                        }
+
+                        for (var index = 0; index < attributes.length; index++) {
+                            if (attributes[index].key == "USER_ATTRIBUTE_UNIQUE_ID") {
+                                isMoEngageLoggedIn = true;
+                                moengageStoredUserId = attributes[index].value;
+                                break;
+                            }
+                        }
+
+                        if (!isLoggedIn && isMoEngageLoggedIn) {
+                            // When user is not logged in but has MoEngage Data, logging out from MoEngagae
+                            destroyUserEntityMoEngage();
+                        } else if (isLoggedIn && !isMoEngageLoggedIn) {
+                            if (typeof sessionData !== 'undefined' && sessionData !== null) {
+                                setUserEntityMoEngage(sessionData, true);
+                            } else if (!!userDataFromDataLayer) {
+                                setUserEntityMoEngage(userDataFromDataLayer);
+                            }
+                        } else if (isLoggedIn && isMoEngageLoggedIn) {
+                            if (typeof sessionData !== 'undefined' && sessionData !== null && sessionData.userId != moengageStoredUserId) {
+                                destroyUserEntityMoEngage(function () {
+                                    setUserEntityMoEngage(sessionData, true);
+                                    moengageStoredUserId = sessionData.userId;
+                                });
+                            } else if (!!sessionData) {
+                                updateChangedUserAttributes(sessionData);
+                            }
+                        }
+
+                        // var VSKLoginMoEDelayCookieValue = window.localStorage.getItem("VSKLoginMoEDelay");
+                        // if (!!VSKLoginMoEDelayCookieValue) {
+                        //     isUnderDelay = true;
+                        //     var currentTime = new Date();
+                        //     currentTime.setMilliseconds(0);
+                        //     var cookieTime = new Date(Number(VSKLoginMoEDelayCookieValue));
+                        //     var diffTimeSec = cookieTime.getTime() - currentTime.getTime();
+                        //     if (diffTimeSec > 2 * 60 * 1000) {
+                        //         isUnderDelay = false;
+                        //         window.localStorage.removeItem("VSKLoginMoEDelay");
+                        //     } else {
+                        //         isUnderDelay = true;
+                        //         setTimeout(function () {
+                        //             isUnderDelay = false;
+                        //             window.localStorage.removeItem("VSKLoginMoEDelay");
+                        //         }, diffTimeSec);
+                        //     }
+                        // }
+
+                        function handleLogin(data) {
+                            // if (!!isAVSKPage) {
+                            //     isUnderDelay = true;
+                            //     var currentTime = new Date();
+                            //     currentTime.setMilliseconds(0);
+                            //     currentTime.setMinutes
+                            //     window.localStorage.setItem("VSKLoginMoEDelay", (currentTime.getTime()+2*60*1000));
+                            //     setTimeout(function () {
+                            //         isUnderDelay = false;
+                            //         window.localStorage.removeItem("VSKLoginMoEDelay");
+                            //     }, 2 * 60 * 1000);
+                            // }
+                            setUserEntityMoEngage(data);
+                        }
+
+                        function handleSignUpEvent(data) {
+                            try {
+                                var resp = !!data && (data.detail || data);
+                                resp = !!resp && !!resp.user && resp.user;
+                                resp = !!resp ? resp : data;
+                                resp = !!resp ? resp : null;
+                                !!window.MoEngageVedantu && window.MoEngageVedantu.track_event('Signup_Complete', {
+                                    'grade': (!!resp && !!resp.studentInfo && resp.studentInfo.grade) || null,
+                                    'board': (!!resp && !!resp.studentInfo && resp.studentInfo.board) || null,
+                                    'target': (!!resp && !!resp.studentInfo && resp.studentInfo.target) || null,
+                                    'examTargets': (!!resp && !!resp.studentInfo && resp.studentInfo.examTargets) || null
+                                });
+                            }
+                            catch (err) {
+                                console.log("Error while sending Moengage event", err)
+                            }
+                            setUserEntityMoEngage(data);
+                        }
+
+                        function setUserEntityMoEngage(e, isSessionData) {
+                            if ((!!e && !!e.detail) || isSessionData) {
+
+                                try {
+                                    var userData = !!isSessionData ? e : e.detail;
+                                    userData.userId = userData.userId || userData.id || (userData.user && userData.user.userId) || (userData.user && userData.user.id);
+                                    var userAttributeLSArray = [];
+                                    if (!!moengageStoredUserId && moengageStoredUserId != userData.userId) {
+                                        userAttributeLSArray.push({ type: "uuui", value: userData.userId })
+                                    } else {
+                                        userAttributeLSArray.push({ type: "auui", value: userData.userId })
+                                    }
+
+                                    userAttributeLSArray.push({ type: "afn", value: userData.firstName });
+                                    userAttributeLSArray.push({ type: "aln", value: userData.lastName });
+                                    userAttributeLSArray.push({ type: "am", value: String(!!userData.phoneCode ? userData.phoneCode : "91") + userData.contactNumber });
+
+                                    var userMainData = null;
+                                    if (userData.user && (userData.user.userId || userData.user.id)) {
+                                        userMainData = userData.user;
+                                    } else {
+                                        userMainData = userData;
+                                    }
+
+                                    if (userMainData.email) {
+                                        userAttributeLSArray.push({ type: "ae", value: userMainData.email });
+                                    }
+                                    userAttributeLSArray.push({ type: "aua", name: "grade", value: userMainData.grade || (userMainData.studentInfo && userMainData.studentInfo.grade) || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "board", value: userMainData.board || (userMainData.studentInfo && userMainData.studentInfo.board) || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "target", value: userMainData.target || (userMainData.studentInfo && userMainData.studentInfo.target) || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "examTargets", value: userMainData.examTargets || (userMainData.studentInfo && userMainData.studentInfo.examTargets) || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "isContactNumberVerified", value: userMainData.isContactNumberVerified || null });
+                                    // userAttributeLSArray.push({type:"aua",name:"isContactNumberDND",value:userMainData.isContactNumberDND || null});
+                                    // userAttributeLSArray.push({type:"aua",name:"referralCode",value:userMainData.referralCode || null});
+                                    userAttributeLSArray.push({ type: "aua", name: "utm_source", value: userMainData.utm_source || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "utm_medium", value: userMainData.utm_medium || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "utm_campaign", value: userMainData.utm_campaign || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "utm_term", value: userMainData.utm_term || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "utm_content", value: userMainData.utm_content || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "locationInfo", value: userMainData.locationInfo || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "role", value: userMainData.role || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "phoneCode", value: userMainData.phoneCode || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "isEmailVerified", value: userMainData.isEmailVerified || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "parentEmails", value: userMainData.parentEmails || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "parentContactNumber", value: (userMainData.studentInfo && (userMainData.studentInfo.parentContactNo || userMainData.studentInfo.parentContactNumbers)) || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "parentFirstName", value: (userMainData.studentInfo && (userMainData.studentInfo.parentFirstName)) || null });
+                                    userAttributeLSArray.push({ type: "aua", name: "parentLastName", value: (userMainData.studentInfo && (userMainData.studentInfo.parentLastName)) || null });
+
+                                    !!window && !!window.localStorage && window.localStorage.setItem(USER_ATTRIBUTE_STORAGE_KEY, window.JSON.stringify(userAttributeLSArray));
+                                    localUAData = userAttributeLSArray;
+
+                                    checkPaidUserOrNot();
+                                }
+                                catch (err) {
+                                    console.log("moengage something went wrong " + err);
+                                }
+                            }
+                        };
+
+                        window.removeEventListener('normal-signup', handleSignUpEvent, true);
+                        window.removeEventListener('normal-login', handleLogin, true);
+                        window.removeEventListener('social-signup', handleSignUpEvent, true);
+                        window.removeEventListener('social-login', handleLogin, true);
+                        window.removeEventListener('vedantu-logout', destroyUserEntityMoEngage, true);
+
+                        window.addEventListener('normal-signup', handleSignUpEvent, true);
+                        window.addEventListener('normal-login', handleLogin, true);
+                        window.addEventListener('social-signup', handleSignUpEvent, true);
+                        window.addEventListener('social-login', handleLogin, true);
+                        window.addEventListener('vedantu-logout', destroyUserEntityMoEngage, true);
+
+
+                        isMoELoaded = true;
+                        syncUserAttributesInit();
+                        syncDataInit();
+                        var MoEngageEvent = new CustomEvent('VED-MOE-LOADED');
+                        window.dispatchEvent(MoEngageEvent);
+                    };
+                });
+
+
+                (function (i, s, o, g, r, a, m, n) { i.moengage_object = r; t = {}; q = function (f) { return function () { (i.moengage_q = i.moengage_q || []).push({ f: f, a: arguments }) } }; f = ['track_event', 'add_user_attribute', 'add_first_name', 'add_last_name', 'add_email', 'add_mobile', 'add_user_name', 'add_gender', 'add_birthday', 'destroy_session', 'add_unique_user_id', 'moe_events', 'call_web_push', 'track', 'location_type_attribute'], h = { onsite: ["getData", "registerCallback"] }; for (k in f) { t[f[k]] = q(f[k]) } for (k in h) for (l in h[k]) { null == t[k] && (t[k] = {}), t[k][h[k][l]] = q(k + "." + h[k][l]) } a = s.createElement(o); m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m); i.moe = i.moe || function () { n = arguments[0]; return t }; a.onload = function () { if (n) { i[r] = moe(n) } } })(window, document, 'script', 'https://cdn.moengage.com/webpush/moe_webSdk.min.latest.js', 'Moengage');
+                Moengage = moe({
+                    app_id: MOENGAGE_APP_ID,
+                    debug_logs: isProductionDebugLog
+                });
+            };
+        };
+
+        var syncDataInit = function () {
+            /**
+             * @description- Main MoEngage function for syncing events to Moengage.
+             * @returns {undefined}
+             */
+            if (!dataSynchedOnPageLoad) {
+                var getlocalAnalyticsDataInfo = getData() || [];
+                getlocalAnalyticsDataInfo.forEach(function(ele){
+                    localAnalyticsData.push(ele);
+                })
+                dataSynchedOnPageLoad = true;
+            };
+            if (!!timerObj) {
+                window.clearInterval(timerObj)
+            };
+            synchDataToMoEngage();
+            timerObj = setInterval(function () {
+                synchDataToMoEngage();
+            }, SYNCH_TIME);
+        };
+
+        var syncUserAttributesInit = function () {
+            /**
+             * @description- Main MoEngage function for syncing user attributes to Moengage.
+             * @returns {undefined}
+             */
+            if (!uaSynchedOnPageLoad) {
+                var getUADataInfo = getUAData() || [];
+                getUADataInfo.forEach(function(ele){
+                    localUAData.push(ele);
+                })
+                uaSynchedOnPageLoad = true;
+            };
+            if (!!uaTimerObj) {
+                window.clearInterval(uaTimerObj)
+            };
+            syncUserAttributesToMoEngage();
+            uaTimerObj = setInterval(function () {
+                syncUserAttributesToMoEngage();
+            }, UA_SYNCH_TIME);
+        };
+
+        var init = function () {
+            MoEngageInitSetup();
+        };
+
+        init();
+
+        return {
+            addUserAttribute: addUserAttribute,
+            track_event: addData
+        };
+    }
+    window.MoEngageVedantu = MoEngageVedantu();
+})(document, window);
