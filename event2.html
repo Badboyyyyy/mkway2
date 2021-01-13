@@ -20,6 +20,16 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 </head>
+<style>
+    
+    table{
+        text-align:center;
+
+    }
+    table thead  tr  th{
+        vertical-align: middle;
+    }
+</style>
 <body>
 <div id="container">
         <!-- Header
@@ -42,8 +52,8 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container">
 
-                    <a class="navbar-brand" style="padding:0px; height:20px" href="index.html">
-                        <img src="img/logo/headerlogo.png"  style="width:150px; margin-top:-10px" alt="">
+                    <a class="navbar-brand" style="padding:0px; height:10px" href="index.html">
+                        <img src="img/logo/headerlogo.png"  style="width:160px; margin-top:-10px" alt="">
                     </a>
 
                     <a href="#" class="mobile-nav-toggle"> 
@@ -132,85 +142,71 @@
     </style>
             <div class="mobile-menu">
                 
-                <div class="shopping-cart-box">
-                    <a class="shop-icon" href="cart.html">
-                        <i class="material-icons">shopping_cart</i>
-                        Cart
-                        <span class="studiare-cart-number">0</span>
-                    </a>
-                </div>
+                
                 <nav class="mobile-nav">
                     <ul class="mobile-menu-list">
-                        <li>
-                            <a href="index.html">Home</a>
-                        </li>
                         <li class="drop-link">
-                            <a href="#">Pages</a>
-                            <ul class="drop-level">
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="pricing.html">Pricing Packages</a></li>
-                                <li><a href="portfolio.html">Portfolio</a></li>
-                                <li><a href="single-project.html">Portfolio Single</a></li>
-                                <li><a href="teachers.html">Teachers</a></li>
-                                <li><a href="single-teacher.html">Teacher Single</a></li>
-                                <li><a href="cart.html">Shopping Cart</a></li>
-                                <li><a href="checkout.html">Checkout</a></li>
-                                <li><a href="single-teacher.html">Teacher Single</a></li>
-                                <li class="drop-link">
-                                    <a href="#">Submenu Level 1</a>
-                                    <ul class="drop-level">
-                                        <li><a href="#">Submenu Level 2</a></li>
-                                        <li class="drop-link">
-                                            <a href="#">Submenu Level 2</a>
-                                            <ul class="drop-level">
-                                                <li><a href="#">Submenu Level 3</a></li>
-                                                <li><a href="#">Submenu Level 3</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">Submenu Level 2</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="drop-link">
-                            <a href="blog.html">Blog</a>
-                            <ul class="drop-level">
-                                <li class="drop-link">
-                                    <a href="blog-list.html">Blog List</a>
-                                    <ul class="drop-level">
-                                        <li><a href="blog-list-leftsidebar.html">Blog List - Sidebar Left</a></li>
-                                        <li><a href="blog-list-rightsidebar.html">Blog List - Sidebar Right</a></li>
-                                        <li><a href="blog-list.html">No Sidebar</a></li>
-                                    </ul>
-                                </li>
-                                <li class="drop-link">
-                                    <a href="blog-grid-3.html">Blog Grid</a>
-                                    <ul class="drop-level">
-                                        <li><a href="blog-grid-3.html">3 Column</a></li>
-                                        <li><a href="blog-grid-4.html">4 Column</a></li>
-                                        <li><a href="blog-grid-leftsidebar.html">Sidebar Left</a></li>
-                                        <li><a href="blog-grid-rightsidebar.html">Sidebar Right</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="blog.html">Blog Classic</a></li>
-                                <li><a href="single-post.html">Post Single</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="courses.html">Courses</a>
-                        </li>
-                        <li>
-                            <a href="events.html">Events</a>
-                        </li>
-                        <li>
-                            <a href="contact.html">Contact</a>
-                        </li>
+                                <a class="active" href="index.html">Home</a>
+                            </li>
+                            
+                            
+                            <li class="drop-link">
+                                <a href="courses.html">Courses</a>
+                            </li>
+                                                        <li class="drop-link">
+                                <a href="event2.html">Fee Structure</a>
+                            </li>
+                            <li> 
+                                <a href="#">Classroom</a>
+                                <ul class="dropdown">
+                                    <li><a href="#">Online Classroom</a>
+                                        <ul class="dropdown" id="d2">
+                                            <li><a href="#">IIT Online Courses</a></li>
+                                            <li><a href="#">NEET Online Courses</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Pre-Engineering</a>
+                                        <ul class="dropdown" id="d2">
+                                            <li><a href="#">Class 12th Pass</a>
+                                                
+                                            </li>
+                                            <li><a href="#">Class 12th</a></li>
+                                            <li><a href="#">Class 11th</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Pre-Medical</a>
+                                        <ul class="dropdown" id="d2">
+                                        <li><a href="#">Class 12th Pass</a></li>
+                                            <li><a href="#">Class 12th</a></li>
+                                            <li><a href="#">Class 11th</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Early Lead Classroom</a>
+                                    <ul class="dropdown" id="d2">
+                                        
+                                            <li><a href="#">Class 10th</a></li>
+                                            <li><a href="#">Class 9th</a></li>
+                                            <li><a href="#">Class 8th</a></li>
+                                            <li><a href="#">Class 7th</a></li>
+                                            <li><a href="#">Class 6th</a></li>
+                                            <li><a href="#">Class 5th</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            <li>
+                                <a href="faculty.html">Faculty</a>
+                            </li>
+
+                            <li><a href="contact.html">Contact</a></li>
+                            <li class="drop-link">
+                                <a href="about.html">About Us</i></a>
+                                
+                            </li>
                     </ul>
                 </nav>
             </div>
 
         </header>
-
 		<!-- End Header -->
 
 		<!-- home-section 
@@ -226,14 +222,14 @@
         <br>
         <br>
         <table class="table table-hover table-broder text-white"  style="font-size:14px; margin:10px; padding:10px; background-color:rgb(11,9,102)">
-            <thead style="font-size:20px; font-weight: bolder;">
-                <th>Course Name</th>
-                <th>Tution Fee</th>
-                <th>Reg.Fee</th>
-                <th>GST @18%</th>
-                <th>Study Material</th>
-                <th>Total<br>(Inclusive all)</th>
-                <th>T.F After 1 Time Fee<br> Deposit Benefited of<br> 5% on T.F.</th>
+            <thead style="font-size:20px; font-weight: bolder; vertical-align: middle">
+                <th style="vertical-align:middle">Course Name</th>
+                <th style="vertical-align:middle">Tution Fee</th>
+                <th style="vertical-align:middle">Reg.Fee</th>
+                <th style="vertical-align:middle">GST @18%</th>
+                <th style="vertical-align:middle">Study Material</th>
+                <th style="vertical-align:middle">Total<br>(Inclusive all)</th>
+                <th style="vertical-align:middle">T.F After 1 Time Fee<br> Deposit Benefited of<br> 5% on T.F.</th>
             </thead>
             <tbody>
                 <tr>
@@ -273,13 +269,13 @@
         <br>
              <table class="table table-hover table-broder text-white"  style="margin:10px; padding:0px; font-size:14px; background-color:rgb(11,9,102)">
             <thead style="font-size:20px; font-weight:bold">
-                <th>Course Name</th>
-                <th>Tution Fee</th>
-                <th>Reg.Fee</th>
-                <th>GST @18%</th>
-                <th>Study Material</th>
-                <th>Total<br>(Inclusive all)</th>
-                <th>T.F After 1 Time Fee<br> Deposit Benefited of<br> 5% on T.F.</th>
+                <th style="vertical-align:middle">Course Name</th>
+                <th style="vertical-align:middle">Tution Fee</th>
+                <th style="vertical-align:middle">Reg.Fee</th>
+                <th style="vertical-align:middle">GST @18%</th>
+                <th style="vertical-align:middle">Study Material</th>
+                <th style="vertical-align:middle">Total<br>(Inclusive all)</th>
+                <th style="vertical-align:middle">T.F After 1 Time Fee<br> Deposit Benefited of<br> 5% on T.F.</th>
             </thead>
             <tbody>
                 <tr>
@@ -346,13 +342,13 @@
         <br>
           <table class="table table-hover table-broder text-white"  style="margin:10px; padding:10px; font-size:14px; background-color:rgb(11,9,102)">
             <thead style="font-size:20px; font-weight:bold">
-                <th>Course Name</th>
-                <th>Tution Fee</th>
-                <th>Reg.Fee</th>
-                <th>GST @18%</th>
-                <th>Study Material</th>
-                <th>Total<br>(Inclusive all)</th>
-                <th>T.F After 1 Time Fee<br> Deposit Benefited of<br> 5% on T.F.</th>
+                <th style="vertical-align:middle">Course Name</th>
+                <th style="vertical-align:middle">Tution Fee</th>
+                <th style="vertical-align:middle">Reg.Fee</th>
+                <th style="vertical-align:middle">GST @18%</th>
+                <th style="vertical-align:middle">Study Material</th>
+                <th style="vertical-align:middle">Total<br>(Inclusive all)</th>
+                <th style="vertical-align:middle">T.F After 1 Time Fee<br> Deposit Benefited of<br> 5% on T.F.</th>
             </thead>
             <tbody>
                 <tr>
@@ -424,12 +420,12 @@
         <br>
          <table class="table table-hover table-broder text-white"  style="margin:10px; padding:10px; font-size:14px; background-color:rgb(11,9,102)">
             <thead style="font-weight:bold; font-size:20px">
-                <th>Week</th>
-                <th>Zero Week</th>
-                <th>1st Week</th>
-                <th>2nd & 3rd Week</th>
-                <th>4th Week</th>
-                <th>6th Week</th>
+                <th style="vertical-align:middle">Week</th>
+                <th style="vertical-align:middle">Zero Week</th>
+                <th style="vertical-align:middle">1st Week</th>
+                <th style="vertical-align:middle">2nd & 3rd Week</th>
+                <th style="vertical-align:middle">4th Week</th>
+                <th style="vertical-align:middle">6th Week</th>
             </thead>
             <tbody>
                 <tr>
@@ -482,7 +478,6 @@
             <p> &nbsp  &nbsp  &nbsp  &nbsp 7.The student/parents should understand the fee refund is a part of institute's policy and we follow the refund rule's </p>
         </div>
         <!-- Subscribe Start -->
-        
         <footer>
             <div class="container">
 
@@ -491,7 +486,7 @@
 
                         <div class="col-lg-4 col-md-6">
                             <div class="footer-widget text-widget">
-                               <a href="index.html" class="footer-logo"><img src="img/logo/footerlogo.png" style="width:170px" alt=""></a>
+                                <a href="index.html" class="footer-logo"><img src="img/logo/footerlogo.png" style="width:190px" alt=""></a>
                                 <p>A premier coaching institute for the preparation of JEE (Main+Advanced), JEE (Main), Pre-Medical (NEET-UG), Pre-Nurture & Career Foundation (Class VI to X, NTSE & Olympiads). The Institute is well regarded for the high quality entrance exams preparation and produces best results year after year</p>
                                 <ul>
                                     <li>

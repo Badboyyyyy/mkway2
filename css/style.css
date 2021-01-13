@@ -253,7 +253,7 @@ header {
     margin-right: 0; }
   .navbar-nav > li > a.active,
   .navbar-nav > li > a:hover {
-    color: #4783f3 !important; }
+}
   .navbar-nav li.drop-link {
     position: relative; }
 
