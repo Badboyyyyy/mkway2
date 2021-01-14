@@ -205,11 +205,11 @@
                       </form>
              <div class="step-row">
               <div id="progress"></div>
-              <div class="step-col"><small>Step1</small>
+              <div class="step-col" id="st1"><small>Step1</small>
               </div>
-              <div class="step-col"><small>Step2</small>
+              <div class="step-col" id="st2"><small>Step2</small>
               </div>
-              <div class="step-col"><small>Step3</small>
+              <div class="step-col" id="st3"><small>Step3</small>
               </div>
               
              </div>
@@ -239,6 +239,8 @@
          document.getElementById("form1").style.left="-450px";
       document.getElementById("form2").style.left="40px";
       document.getElementById("progress").style.width= "240px";
+      document.getElementById("st1").style.color="white";
+      document.getElementById("st2").style.color="white";
       }
      
 
@@ -255,6 +257,7 @@
       document.getElementById("form2").style.left="-450px";
       document.getElementById("form3").style.left="40px";
       document.getElementById("progress").style.width="360px";
+      document.getElementById("st2").style.color="white";
      }
      prev2.onclick= function(){
       document.getElementById("form2").style.left="40px";
