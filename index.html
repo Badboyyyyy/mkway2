@@ -22,7 +22,32 @@
 </head>
 <body>
 
+<style>
+	li{
+		position: relative;
+	}
+	.dropdown{
+		position: absolute;
+	;
+	}
+	#d2{
+		position: absolute;
+		left: 100%;
+	}
+	@media(max-width:768px){
+		#classes{
+			background-color:#212529;
+		}
+		#d2{
+			background-color: #212529;
+		}
+		#cone{
+			line-height: 1.5em;
+		}
+	}
 
+
+	</style>
 	<!-- Container -->
 	<div id="container">
 		<!-- Header
@@ -116,21 +141,7 @@
 					</div>
 				</div>
 			</nav>
-<style>
-	li{
-		position: relative;
-	}
-	.dropdown{
-		position: absolute;
-	;
-	}
-	#d2{
-		position: absolute;
-		left: 100%;
-	}
 
-
-	</style>
 			<div class="mobile-menu">
 				
 				
@@ -149,7 +160,7 @@
 							</li>
 							<li> 
 								<a href="#">Classroom</a>
-								<ul class="dropdown">
+								<ul class="dropdown" id="classes">
 									<li><a href="#">Online Classroom</a>
 										<ul class="dropdown" id="d2">
 											<li><a href="#">IIT Online Courses</a></li>
@@ -175,12 +186,10 @@
 									<li><a href="#">Early Lead Classroom</a>
 									<ul class="dropdown" id="d2">
 										
-											<li><a href="#">Class 10th</a></li>
-											<li><a href="#">Class 9th</a></li>
-											<li><a href="#">Class 8th</a></li>
-											<li><a href="#">Class 7th</a></li>
-											<li><a href="#">Class 6th</a></li>
-											<li><a href="#">Class 5th</a></li>
+											<li><a href="vivek.html">Class 10th</a></li>
+											<li><a href="vikas.html">Class 9th</a></li>
+											<li><a href="vinay.html">Class 8th</a></li>
+											
 										</ul>
 									</li>
 								</ul>
