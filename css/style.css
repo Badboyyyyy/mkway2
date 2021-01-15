@@ -237,7 +237,7 @@ header {
   margin-right: -15px; }
   .navbar-nav > li > a {
     color: #2f2f32 !important;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 1000 !important;
     transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
@@ -3176,7 +3176,7 @@ footer {
           padding: 6px 0; }
           footer .up-footer .footer-widget.text-widget ul li .contact-info-icon {
             margin-right: 12px;
-            font-size: 22px; }
+           }
           footer .up-footer .footer-widget.text-widget ul li .contact-info-value {
             font-size: 15px; }
       footer .up-footer .footer-widget ul.quick-list {
