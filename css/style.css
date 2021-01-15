@@ -30,7 +30,7 @@
  27.Footer
 -------------------------------------------------*/
 body {
-  font-family: "Raleway", sans-serif; }
+ font-family:'Quattrocento Sans', sans-serif; }
 
 .reset-elem, .top-line .right-top-line ul, .dropdown, .mobile-menu nav.mobile-nav ul, section.page-banner-section ul.page-depth, section.blog-section ul.page-pagination, .sidebar .category-widget ul.category-list,
 .sidebar .category-widget ul.archives-list,
@@ -47,7 +47,7 @@ body {
 p, .paragraph, .blog-post.single-post ul.text-list li {
   font-size: 15px;
   color: #7d7e7f;
-  font-weight: 400;
+  font-weight: bold
   line-height: 24px;
   margin: 0 0 10px; }
 
@@ -131,7 +131,7 @@ header {
     .top-line .right-top-line button {
       display: inline-block;
       width: 56px;
-      heght: 56px;
+      height: 56px;
       text-align: center;
       color: rgba(255, 255, 255, 0.75);
       background-color: rgba(0, 0, 0, 0.15);
@@ -199,6 +199,8 @@ header {
   background-color: #fff !important;
   border-bottom: 1px solid rgba(204, 204, 204, 0.3); }
   .navbar a.navbar-brand {
+    font-family: font-family:'Quattrocento Sans', sans-serif;
+    font-weight:bold;
     float: none;
     margin-right: 30px; }
     .navbar a.navbar-brand img {
@@ -235,8 +237,8 @@ header {
   margin-right: -15px; }
   .navbar-nav > li > a {
     color: #2f2f32 !important;
-    font-size: 16px;
-    font-weight: 400 !important;
+    font-size: 20px;
+    font-weight: 1000 !important;
     transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
@@ -3157,7 +3159,8 @@ footer {
     footer .up-footer .footer-widget {
       margin-bottom: 50px; }
       footer .up-footer .footer-widget .footer-logo {
-        margin-bottom: 30px; }
+        margin-bottom: 30px;
+        margin-left:80px; }
       footer .up-footer .footer-widget h2 {
         color: #fff;
         margin-bottom: 30px;
