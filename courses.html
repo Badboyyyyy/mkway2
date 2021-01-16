@@ -5,7 +5,7 @@
 <head>
 	<title>MkWay</title>
 
-<meta charset="utf-8">
+	<meta charset="utf-8">
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -18,9 +18,17 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Quattrocento+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
 </head>
+<body>
 
 <style>
+	*{
+		font-family:'Quattrocento Sans', sans-serif;
+	}
 	li{
 		position: relative;
 	}
@@ -32,12 +40,22 @@
 		position: absolute;
 		left: 100%;
 	}
+	 a{
+		font-family:'Quattrocento Sans', sans-serif;
+		font-weight:800;
+	}
+	.mobile-nav ul li{
+		margin:2em 0;
+	}
 	@media(max-width:768px){
 		#classes{
 			background-color:#212529;
 		}
 		#d2{
 			background-color: #212529;
+		}
+		#cone{
+			line-height: 1.5em;
 		}
 	}
 
@@ -66,7 +84,7 @@
 				<div class="container">
 
 					<a class="navbar-brand" style="padding:0px; height:10px" href="index.html">
-						<img src="img/logo/headerlogo.png"  style="width:160px; margin-top:-10px" alt="">
+						<img src="img/logo/headerlogo.png"  style="width:170px; margin-top:-12px" alt="">
 					</a>
 
 					<a href="#" class="mobile-nav-toggle"> 
@@ -75,7 +93,7 @@
 
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav mr-auto">
-							<li class="drop-link">
+							<li class="drop-link" style="font-weight:bold">
 								<a class="active" href="index.html">Home</a>
 							</li>
 							
@@ -141,20 +159,20 @@
 				
 				
 				<nav class="mobile-nav">
-					<ul class="mobile-menu-list">
+					<ul class="mobile-menu-list" style="margin-top:5em; margin-left:2em">
 						<li class="drop-link">
-								<a class="active" href="index.html">Home</a>
+								<a class="active" href="index.html"><i class="fas fa-home" style="margin-right:10px"></i>Home</a>
 							</li>
 							
 							
 							<li class="drop-link">
-								<a href="courses.html">Courses</a>
+								<a href="courses.html"><i class="fas fa-book-open" style="margin-right:10px"></i>Courses</a>
 							</li>
 														<li class="drop-link">
-								<a href="event2.html">Fee Structure</a>
+								<a href="event2.html"><i class="fas fa-rupee-sign" style="margin-right:10px"></i>Fee Structure</a>
 							</li>
 							<li> 
-								<a href="#">Classroom</a>
+								<a href="#"><i class="fas fa-chalkboard" style="margin-right:10px"></i>Classroom</a>
 								<ul class="dropdown" id="classes">
 									<li><a href="#">Online Classroom</a>
 										<ul class="dropdown" id="d2">
@@ -189,12 +207,12 @@
 									</li>
 								</ul>
 							<li>
-								<a href="faculty.html">Faculty</a>
+								<a href="faculty.html"><i class="fas fa-users" style="margin-right:10px"></i>Faculty</a>
 							</li>
 
-							<li><a href="contact.html">Contact</a></li>
+							<li><a href="contact.html"><i class="far fa-address-book" style="margin-right:10px"></i>Contact</a></li>
 							<li class="drop-link">
-								<a href="about.html">About Us</i></a>
+								<a href="about.html"><i class="fas fa-info-circle" style="margin-right:10px"></i>About Us</i></a>
 								
 							</li>
 					</ul>
@@ -675,8 +693,8 @@
 
 						<div class="col-lg-4 col-md-6">
 							<div class="footer-widget text-widget">
-								<a href="index.html" class="footer-logo"><img src="img/logo/footerlogo.png" style="width:190px" alt=""></a>
-								<p>A premier coaching institute for the preparation of JEE (Main+Advanced), JEE (Main), Pre-Medical (NEET-UG), Pre-Nurture & Career Foundation (Class VI to X, NTSE & Olympiads). The Institute is well regarded for the high quality entrance exams preparation and produces best results year after year</p>
+								<a href="index.html" class="footer-logo"><img src="img/logo/footerlogo.png" style="width:200px; display:flex; justify-content:center; align-item" alt=""></a>
+								<p style="text-align:justify">A premier coaching institute for the preparation of JEE (Main+Advanced), JEE (Main), Pre-Medical (NEET-UG), Pre-Nurture & Career Foundation (Class VI to X, NTSE & Olympiads). The Institute is well regarded for the high quality entrance exams preparation and produces best results year after year</p>
 								<ul>
 									<li>
 										<div class="contact-info-icon">
@@ -709,14 +727,14 @@
 						<div class="col-lg-4 col-md-6">
 							<div class="footer-widget quick-widget">
 								<h2>Quick Links</h2>
-								<ul class="quick-list">
+								<ul class="quick-list" style="font-size:16px">
 									<li><a href="contact.html">Contact</a></li>
-									<li><a href="pricing.html">Pricing Packages</a></li>
+									<li><a href="event2.html">Fee Structure</a></li>
 									<li><a href="about.html">About Us</a></li>
 									<li><a href="courses.html">Courses</a></li>
-									<li><a href="blog.html">News</a></li>
+									
 									<li><a href="index.html">Home</a></li>
-									<li><a href="#">Sample Page</a></li>
+									
 								</ul>
 							</div>
 						</div>

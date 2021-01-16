@@ -238,7 +238,7 @@ header {
   .navbar-nav > li > a {
     color: #2f2f32 !important;
     font-size: 18px;
-    font-weight: 1000 !important;
+   
     transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
