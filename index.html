@@ -12,8 +12,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Raleway:300,400,400i,500,500i,600,700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/studiare-assets.min.css">
-	<link rel="stylesheet" type="text/css" href="css/fonts/font-awesome/font-awesome.min.css" media="screen">
-	<link rel="stylesheet" type="text/css" href="css/fonts/elegant-icons/style.css" media="screen">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" integrity="sha512-1cK78a1o+ht2JcaW6g8OXYwqpev9+6GqOkz9xmBN9iUUhIndKtxwILGWYOSibOKjLsEdjyjZvYDq/cZwNeak0w==" crossorigin="anonymous" />
 	<link rel="stylesheet" type="text/css" href="css/fonts/iconfont/material-icons.css" media="screen">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -26,26 +25,32 @@
 <body>
 
 <style>
+	
+	
 	*{
-		font-family:'Quattrocento Sans', sans-serif;
-	}
-	li{
-		position: relative;
-	}
-	.dropdown{
-		position: absolute;
-	;
-	}
-	#d2{
-		position: absolute;
-		left: 100%;
-	}
-	 a{
-		font-family:'Quattrocento Sans', sans-serif;
-		font-weight:800;
-	}
-	.mobile-nav ul li{
-		margin:2em 0;
+        font-family:'Quattrocento Sans', sans-serif;
+    }
+    li{
+        position: relative;
+    }
+    .dropdown{
+        position: absolute;
+    ;
+    }
+    #d2{
+        position: absolute;
+        left: 100%;
+    }
+     a{
+        font-family:'Quattrocento Sans', sans-serif;
+        font-weight:800;
+    }
+    .mobile-nav ul li ul{
+    	background-color: #000;
+    }
+    .mobile-nav ul li{
+        margin:2em 0;
+    }
 	}
 	@media(max-width:768px){
 		#classes{
@@ -67,20 +72,10 @@
 		    ================================================== -->
 		<header class="clearfix">
 
-			<div class="top-line">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-6">
-							<p><i class="material-icons">phone</i> <span>+91 9460110123</span></p>
-							<p><i class="material-icons">email</i> <span>mkwayedubrain@gamil.com</span></p>
-						</div>
-						
-					</div>
-				</div>
-			</div>
+			
 
 		
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<nav class="navbar navbar-expand-lg fixed-top" style="background-color:white; height:12vh" >
 				<div class="container">
 
 					<a class="navbar-brand" style="padding:0px; height:10px" href="index.html">
@@ -93,24 +88,24 @@
 
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav mr-auto">
-							<li class="drop-link" style="font-weight:bold">
-								<a class="active" href="index.html">Home</a>
+							<li class="nav-item" style="font-weight:bold">
+								<a class="nav-link active" href="index.html">Home</a>
 							</li>
 							
 							
-							<li class="drop-link">
-								<a href="courses.html">Courses</a>
+							<li class="nav-item">
+								<a class="nav-link" href="courses.html">Courses</a>
 							</li>
-														<li class="drop-link">
-								<a href="event2.html">Fee Structure</a>
+							<li class="nav-item">
+								<a  class="nav-link" href="event2.html">Fee Structure</a>
 							</li>
-							<li> 
+							<li class="nav-item"> 
 								<a href="#">Classroom</a>
-								<ul class="dropdown">
+								<ul class="dropdown" style="background:#fff">
 									<li><a href="#">Online Classroom</a>
 										<ul class="dropdown" id="d2">
-											<li><a href="#">IIT Online Courses</a></li>
-											<li><a href="#">NEET Online Courses</a></li>
+											<a href="#" style="color:white">IIT Online Courses</a>
+											<a href="#" style="color:white">NEET Online Courses</a>
 										</ul>
 									</li>
 									<li><a href="#">Pre-Engineering</a>
@@ -150,7 +145,7 @@
 							</li>
 						</ul>
 
-						<a href="form/apply.php" class="register-modal-opener login-button" style="color:white; background-color:rgb(11, 9, 102)"><i class="material-icons">perm_identity</i> Apply Now</a>
+						<a href="form/apply.php" class="login-button"><i class="material-icons"></i> Apply Now</a>
 					</div>
 				</div>
 			</nav>
@@ -158,65 +153,65 @@
 			<div class="mobile-menu">
 				
 				
-				<nav class="mobile-nav">
-					<ul class="mobile-menu-list" style="margin-top:5em; margin-left:2em">
-						<li class="drop-link">
-								<a class="active" href="index.html"><i class="fas fa-home" style="margin-right:10px"></i>Home</a>
-							</li>
-							
-							
-							<li class="drop-link">
-								<a href="courses.html"><i class="fas fa-book-open" style="margin-right:10px"></i>Courses</a>
-							</li>
-														<li class="drop-link">
-								<a href="event2.html"><i class="fas fa-rupee-sign" style="margin-right:10px"></i>Fee Structure</a>
-							</li>
-							<li> 
-								<a href="#"><i class="fas fa-chalkboard" style="margin-right:10px"></i>Classroom</a>
-								<ul class="dropdown" id="classes">
-									<li><a href="#">Online Classroom</a>
-										<ul class="dropdown" id="d2">
-											<li><a href="#">IIT Online Courses</a></li>
-											<li><a href="#">NEET Online Courses</a></li>
-										</ul>
-									</li>
-									<li><a href="#">Pre-Engineering</a>
-										<ul class="dropdown" id="d2">
-											<li><a href="#">Class 12th Pass</a>
-												
-											</li>
-											<li><a href="#">Class 12th</a></li>
-											<li><a href="#">Class 11th</a></li>
-										</ul>
-									</li>
-									<li><a href="#">Pre-Medical</a>
-										<ul class="dropdown" id="d2">
-										<li><a href="#">Class 12th Pass</a></li>
-											<li><a href="#">Class 12th</a></li>
-											<li><a href="#">Class 11th</a></li>
-										</ul>
-									</li>
-									<li><a href="#">Early Lead Classroom</a>
-									<ul class="dropdown" id="d2">
-										
-											<li><a href="vivek.html">Class 10th</a></li>
-											<li><a href="vikas.html">Class 9th</a></li>
-											<li><a href="vinay.html">Class 8th</a></li>
-											
-										</ul>
-									</li>
-								</ul>
-							<li>
-								<a href="faculty.html"><i class="fas fa-users" style="margin-right:10px"></i>Faculty</a>
-							</li>
+				 <nav class="mobile-nav">
+                    <ul class="mobile-menu-list" style="margin-top:5em; margin-left:2em">
+                        <li class="drop-link">
+                                <a class="active" href="index.html"><i class="fas fa-home" style="margin-right:10px"></i>Home</a>
+                            </li>
+                            
+                            
+                            <li class="drop-link">
+                                <a href="courses.html"><i class="fas fa-book-open" style="margin-right:10px"></i>Courses</a>
+                            </li>
+                                                        <li class="drop-link">
+                                <a href="event2.html"><i class="fas fa-rupee-sign" style="margin-right:10px"></i>Fee Structure</a>
+                            </li>
+                            <li> 
+                                <a href="#"><i class="fas fa-chalkboard" style="margin-right:10px"></i>Classroom</a>
+                                <ul class="dropdown" id="classes">
+                                    <li><a href="#">Online Classroom</a>
+                                        <ul class="dropdown" id="d2">
+                                            <li><a href="#">IIT Online Courses</a></li>
+                                            <li><a href="#">NEET Online Courses</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Pre-Engineering</a>
+                                        <ul class="dropdown" id="d2">
+                                            <li><a href="#">Class 12th Pass</a>
+                                                
+                                            </li>
+                                            <li><a href="#">Class 12th</a></li>
+                                            <li><a href="#">Class 11th</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Pre-Medical</a>
+                                        <ul class="dropdown" id="d2">
+                                        <li><a href="#">Class 12th Pass</a></li>
+                                            <li><a href="#">Class 12th</a></li>
+                                            <li><a href="#">Class 11th</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Early Lead Classroom</a>
+                                    <ul class="dropdown" id="d2">
+                                        
+                                            <li><a href="vivek.html">Class 10th</a></li>
+                                            <li><a href="vikas.html">Class 9th</a></li>
+                                            <li><a href="vinay.html">Class 8th</a></li>
+                                            
+                                        </ul>
+                                    </li>
+                                </ul>
+                            <li>
+                                <a href="faculty.html"><i class="fas fa-users" style="margin-right:10px"></i>Faculty</a>
+                            </li>
 
-							<li><a href="contact.html"><i class="far fa-address-book" style="margin-right:10px"></i>Contact</a></li>
-							<li class="drop-link">
-								<a href="about.html"><i class="fas fa-info-circle" style="margin-right:10px"></i>About Us</i></a>
-								
-							</li>
-					</ul>
-				</nav>
+                            <li><a href="contact.html"><i class="far fa-address-book" style="margin-right:10px"></i>Contact</a></li>
+                            <li class="drop-link">
+                                <a href="about.html"><i class="fas fa-info-circle" style="margin-right:10px"></i>About Us</i></a>
+                                
+                            </li>
+                    </ul>
+                </nav>
 			</div>
 
 		</header>
@@ -226,10 +221,10 @@
 			================================================== -->
 			<div id="mycarousel" class="carousel slide carousel-fade" data-ride="">
 				<div class="carousel-inner">
-					<div class="item active">
-						<img src="img/M.png" class="d-block w-100">
-					</div>
 					<div class="item">
+						<img src="img/slide1.jfif" class="d-block w-100">
+					</div>
+					<div class="item active">
 						<img src="img/slider/banner2.jpg" class="d-block w-100">
 					</div>
 				</div>
@@ -245,53 +240,7 @@
 
 		<!-- feature-section 
 			================================================== -->
-		<section class="feature-section">
-			<div class="container">
-				<div class="feature-box">
-					<div class="row">
-						<div class="col-lg-4 col-md-6">
-							<div class="feature-post">
-								<div class="icon-holder">
-									<i class="fa fa-umbrella"></i>
-								</div>
-								<div class="feature-content">
-									<h2>
-										Digital Courses
-									</h2>
-									<p>Analyzing negative materials about your brand and addressing them with sentiment analysis and press.</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="feature-post">
-								<div class="icon-holder color2">
-									<i class="fa fa-id-card-o"></i>
-								</div>
-								<div class="feature-content">
-									<h2>
-										Classroom Progress
-									</h2>
-									<p>Analyzing negative materials about your brand and addressing them with sentiment analysis and press.</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="feature-post">
-								<div class="icon-holder color3">
-									<i class="fa fa-handshake-o"></i>
-								</div>
-								<div class="feature-content">
-									<h2>
-										Distance learning program
-									</h2>
-									<p>Analyzing negative materials about your brand and addressing them with sentiment analysis and press.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
+		
 		<!-- End feature section -->
 
 		<!-- collection-section 
@@ -304,12 +253,12 @@
 						<h1>Trending Collection</h1>
 					</div>
 					<div class="right-part">
-						<a class="button-one" href="#" style="color:white; background-color:rgb(11, 9, 102)">View All Courses</a>
+						<a class="button-one" href="courses.html">View All Courses</a>
 					</div>
 				</div>
 				<div class="collection-box">
 					<div class="row">
-						<div class="col-lg-6 col-md-12">
+						<div class="col-lg-6 col-md-12" data-aos="flip-left" >
 							<div class="collection-post">
 								<div class="inner-collection">
 									<img src="img/ENGINEERING.png" alt="">
@@ -317,21 +266,21 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-3 col-md-6">
+						<div class="col-lg-3 col-md-6" data-aos="fade-up-right">
 							<div class="collection-post">
 								<div class="inner-collection">
 									<img src="img/arjun.png" alt="">
 									
 								</div>
 							</div>
-							<div class="collection-post">
+							<div class="collection-post" data-aos="fade-up-left">
 								<div class="inner-collection">
 									<img src="img/e.png" alt="">
 									
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-3 col-md-6">
+						<div class="col-lg-3 col-md-6" data-aos="fade-up-right">
 							<div class="collection-post">
 								<div class="inner-collection">
 									<img src="img/NURTURE.png" alt="">
@@ -339,7 +288,7 @@
 								</div>
 							</div>
 							<div class="collection-post">
-								<div class="inner-collection">
+								<div class="inner-collection" data-aos="fade-up-left">
 									<img src="img/foundation.png" alt="">
 									
 								</div>
@@ -359,34 +308,35 @@
 				<div class="countdown-box">
 					<h1>Limited Time: Book your demo classes now!</h1>
 					<p>Learn anytime, anywhere. Best Courses. Top Instituion.</p>
-					<div class="countdown-item" data-date="2019/12/14">
-						<div class="countdown-col">
-							<span class="countdown-unit countdown-days">
-								<span class="number" id="days"></span>
+					<div class="countdown-item">
+						<div class="row">
+						<div class="col-3" style="margin:0px; padding:0px">
+							<span class="countdown-unit countdown-days" style="margin:0px; padding:0px">
+								<span class="number" id="days">30</span>
 								<span class="text">days</span>
 							</span>
 						</div>
-						<div class="countdown-col">
-							<span class="countdown-unit countdown-hours">
-								<span class="number" id="hours"></span>
-								<span class="text">hours</span>
+						<div class="col-3" style="margin:0px; padding:0px">
+							<span class="countdown-unit countdown-hours" style="margin:0px; padding:0px">
+								<span class="number" id="hours" style="margin:0px">23</span>
+								<span class="text" style="margin:0px">hours</span>
 							</span>
 						</div>
-						<div class="countdown-col">
-							<span class="countdown-unit countdown-min">
-								<span class="number" id="minutes"></span>
+						<div class="col-3" style="margin:0px; padding:0px">
+							<span class="countdown-unit countdown-min" style="margin:0px; padding:0px">
+								<span class="number" id="minutes">59</span>
 								<span class="text">minutes</span>
 							</span>
 						</div>
-						<div class="countdown-col">
-							<span class="countdown-unit countdown-sec">
-								<span class="number" id="seconds"></span>
+						<div  class="col-3" style="margin:0px; padding:0px">
+							<span class="countdown-unit countdown-sec" style="margin:0px; padding:0px">
+								<span class="number" id="seconds">59</span>
 								<span class="text">seconds</span>
 							</span>
 						</div>
 					</div>
-					
-					<a class="button-two" href="form/apply.php" style="background-color:rgb(11,9,102)">Get my free demo</a>
+					</div>
+					<a class="button-two" href="form/apply.php">Get my free demo</a>
 				</div>
 			</div>
 		</section>
@@ -408,7 +358,7 @@
 				<div class="popular-courses-box">
 					<div class="row">
 
-						<div class="col-lg-3 col-md-6">
+						<div class="col-lg-3 col-md-6" data-aos="zoom-in-up">
 							<div class="course-post">
 								<div class="course-thumbnail-holder">
 									<a href="vinay.html">
@@ -435,7 +385,7 @@
 							</div>
 						</div>
 
-						<div class="col-lg-3 col-md-6">
+						<div class="col-lg-3 col-md-6" data-aos="zoom-in-up">
 							<div class="course-post">
 								<div class="course-thumbnail-holder">
 									<a href="vikas.html">
@@ -462,7 +412,7 @@
 							</div>
 						</div>
 
-						<div class="col-lg-3 col-md-6">
+						<div class="col-lg-3 col-md-6" data-aos="zoom-in-down">
 							<div class="course-post">
 								<div class="course-thumbnail-holder">
 									<a href="vivek.html">
@@ -488,7 +438,7 @@
 							</div>
 						</div>
 
-						<div class="col-lg-3 col-md-6">
+						<div class="col-lg-3 col-md-6" data-aos="zoom-in-down">
 							<div class="course-post">
 								<div class="course-thumbnail-holder">
 									<a href="single-course.html">
@@ -612,7 +562,7 @@
 							</div>
 						</div>
 
-						<div class="video-box">
+						<div class="video-box" data-aos="flip-left">
 							<div class="video-post">
 								<img src="https://i.ytimg.com/vi/NLW-0qivM1w/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLB9AT0FzPbUb3xVTLZC5dU9R4ls7g" alt="">
 								
@@ -620,14 +570,14 @@
 							</div>
 
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-6" data-aos="flip-left">
 									<div class="video-post small-post">
 										<img src=https://i.ytimg.com/vi/2VuSu0D18tI/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLAfkGHL2HWo7XqT48t43PVLeoyEVg alt="">
 										
 										<a class="video-link iframe" href= "https://www.youtube.com/watch?v=2VuSu0D18tI"><span><i class="fa fa-play"></i></span></a>
 									</div>
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-6" data-aos="flip-left">
 									<div class="video-post small-post">
 										<img src=https://i.ytimg.com/vi/T0r378cbu0Y/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLAvJJey4ZdMtMNnHwOGLKeyX7tMSw  alt="">
 										
@@ -659,7 +609,7 @@
 				</div>
 				<div class="news-box">
 					<div class="row">
-						<div class="col-lg-3 col-md-6 center">
+						<div class="col-lg-3 col-md-6 center" data-aos="zoom-in-left">
 							<div class="blog-post">
 								<a href="single-post.html"><img src="images/slide33.jpg" style="height:200px" alt=""></a>
 								<div class="post-content">
@@ -671,7 +621,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-3 col-md-6 center">
+						<div class="col-lg-3 col-md-6 center" data-aos="zoom-in-left">
 							<div class="blog-post">
 								<a href="single-post.html"><img src="images/slide4.jpg" style="height:200px" alt=""></a>
 								<div class="post-content">
@@ -683,7 +633,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-3 col-md-6 center">
+						<div class="col-lg-3 col-md-6 center" data-aos="zoom-in-left">
 							<div class="blog-post">
 								<a href="single-post.html"><img src="images/slide3.jpg" style="height:200px" alt=""></a>
 								<div class="post-content">
@@ -695,7 +645,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-3 col-md-6 center">
+						<div class="col-lg-3 col-md-6 center" data-aos="zoom-in-left">
 							<div class="blog-post">
 								<a href="single-post.html"><img src="images/nn.jpg" style="height:200px" alt=""></a>
 								<div class="post-content">
@@ -717,76 +667,7 @@
 
 		<!-- testimonial-section 
 			================================================== -->
-		<section class="testimonial-section">
-			<div class="container">
-				<div class="testimonial-box owl-wrapper">
-					
-					<div class="owl-carousel" data-num="1">
-					
-						<div class="item">
-							<div class="testimonial-post">
-								<p> "The credit of the position where I stand today clearly goes to my teachers here at MkWay who taught at the depth of the subject, supported me whenever I felt downtrodden. Motivation towards the goal by Arun Sir and Akash Sir proved to be a backbone."</p>
-								<div class="profile-test">
-									<div class="avatar-holder">
-										<img src="img/choose/1.jpg" alt="">
-									</div>
-									<div class="profile-data">
-										<h2>Shubham Ranka</h2>
-										<p>Govt. Medical college, Maharashtra</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-						<div class="item">
-							<div class="testimonial-post">
-								<p> “I had a great and preetiful time MkWay Edubrain. Arun Sir, Piyush Sir and Aakash Sir inspired me a lot. Other than teaching very well, they motivated me. The best part was they were frank and familiar with me.”</p>
-								<div class="profile-test">
-									<div class="avatar-holder">
-										<img src="img/choose/2.jpg" alt="">
-									</div>
-									<div class="profile-data">
-										<h2>Shefali Jain</h2>
-										<p>NIT Jalandhar</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-						<div class="item">
-							<div class="testimonial-post">
-								<p> “I, Kanishk has secured as AIR 1935 in NEET. I am now studying in Government Medical college, Pondicherry. The credit for my success goes to the MkWay. It's faculty, study material and my friends helped a lot in achieving my aim.”</p>
-								<div class="profile-test">
-									<div class="avatar-holder">
-										<img src="img/choose/3.jpg" alt="">
-									</div>
-									<div class="profile-data">
-										<h2>Kanishk Tank</h2>
-										<p>Govt. Medical College, Pondicherry.</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					
-						<div class="item">
-							<div class="testimonial-post">
-								<p> “I am Deepak, and I joined MkWay for my JEE preparation . The study environment of MkWay is very healthy. ”</p>
-								<div class="profile-test">
-									<div class="avatar-holder">
-										<img src="img/choose/4.jpg" alt="">
-									</div>
-									<div class="profile-data">
-										<h2>Deepak Suthar</h2>
-										<p>IIT Delhi</p>
-									</div>
-								</div>
-							</div>
-						</div>
-
-					</div>
-				</div>
-			</div>
-		</section>
+		
 		<!-- End testimonial section -->
 
 		<!-- footer 
@@ -794,45 +675,51 @@
 		<footer>
 			<div class="container">
 
-				<div class="up-footer">
+
 					<div class="row">
 
-						<div class="col-lg-4 col-md-6">
+						<div class="col-lg-4 col-12" id="part1">
 							<div class="footer-widget text-widget">
-								<a href="index.html" class="footer-logo"><img src="img/logo/footerlogo.png" style="width:250px; display:flex; justify-content:center; align-item" alt=""></a>
-								<p style="text-align:justify">A premier coaching institute for the preparation of JEE (Main+Advanced), JEE (Main), Pre-Medical (NEET-UG), Pre-Nurture & Career Foundation (Class VI to X, NTSE & Olympiads). The Institute is well regarded for the high quality entrance exams preparation and produces best results year after year</p>
+								<a href="index.html" class="footer-logo"><img src="img/logo/footerlogo.png" style="width:250px;" alt=""></a>
+								<p style="text-align:justify; color:#fff">A premier coaching institute for the preparation of JEE (Main+Advanced), JEE (Main), Pre-Medical (NEET-UG), Pre-Nurture & Career Foundation (Class VI to X, NTSE & Olympiads). The Institute is well regarded for the high quality entrance exams preparation and produces best results year after year</p>
+							</div>
+						</div>
+						   <div class="col-lg-4 col-12" id="part2">
+						   	<div class="location">
+						      	<h2 style="color:#fff;">Location</h2>
 								<ul>
 									<li>
 										<div class="contact-info-icon">
 											<i class="material-icons">location_on</i>
-										</div>
-									<div class="contact-info-value">15, Daryani Heights, Hemu Kalani Circle, Sindhu Nagar, Bhilwara</div>
+										<content>15, Daryani Heights, Hemu Kalani Circle, Sindhu Nagar, Bhilwara</content>
+									    </div>
 							     	</li>
-								<li>
+								    <li>
 									<div class="contact-info-icon">
 											<i class="material-icons">location_on</i>
-										</div>
-									<div class="contact-info-value">Love Graden Road, Above Hdfc Bank, Rc Vyas Colany,Bhilwara</div>
+									       <content> Love Graden Road, Above Hdfc Bank, Rc Vyas Colany,Bhilwara</content>
+									</div>
 									</li>
 									<li>
 										<div class="contact-info-icon">
 											<i class="material-icons">phone_android</i>
-										</div>
-										<div class="contact-info-value">01482- 237789, 297523</div>
+										    <content> 01482- 237789, 297523</content>
+										 </div>
 									</li>
 									<li>
 										<div class="contact-info-icon">
 											<i class="material-icons">phone_android</i>
-										</div>
-										<div class="contact-info-value">9460110123, 7976778184, 7976745193</div>
+										    <content> 9460110123, 7976778184, 7976745193</content>
+										 </div>
 									</li>
 								</ul>
 							</div>
 						</div>
+						
 
-						<div class="col-lg-4 col-md-6">
+						<div class="col-lg-4 col-12" id="part3">
 							<div class="footer-widget quick-widget">
-								<h2>Quick Links</h2>
+								<h2 style="color:#fff">Quick Links</h2>
 								<ul class="quick-list" style="font-size:16px">
 									<li><a href="contact.html">Contact</a></li>
 									<li><a href="event2.html">Fee Structure</a></li>
@@ -844,161 +731,59 @@
 								</ul>
 							</div>
 						</div>
-
-						<div class="col-lg-4 col-md-6">
-							<div class="footer-widget subscribe-widget">
-								<h2>Newsletter</h2>
-								<p>Don’t miss anything, sign up now and keep informed about our company.</p>
-								<div class="newsletter-form">
-									<input class="form-control" type="email" name="EMAIL" placeholder="Enter Your E-mail" required="">
-									<input type="submit" value="Subscribe" style="background-color:rgb(11,9,102)">
-								</div>
-							</div>
-						</div>
-
 					</div>
-				</div>
+				
+  
 
-			</div>
-
-			<div class="footer-copyright copyrights-layout-default">
-				<div class="container">
-					<div class="copyright-inner">
-						<div class="copyright-cell"> &copy; 2020 <span class="highlight"><span style="color:#F4C430">MkWay </span></span>. Created by Maxifyy</div>
-						<div class="copyright-cell">
-							<ul class="studiare-social-links">
-								<li><a href="#" class="facebook"><i class="fa fa-facebook-f"></i></a></li>
-								<li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#" class="google"><i class="fa fa-google-plus"></i></a></li>
-								<li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+		 
+		       <div class="row">
+		 	      <div class="col-lg-12 col-12">
+                       <div class="social-icon">
+							<ul>
+								<li><a href="#" class="facebook"><i class="fab fa-4x fa-facebook-f"></i></a></li>
+								<li><a href="#" class="twitter"><i class="fab fa-4x fa-twitter"></i></a></li>
+								<li><a href="#" class="google"><i class="fab fa-4x fa-google-plus-g"></i></a></li>
+								<li><a href="#" class="linkedin"><i class="fab fa-4x fa-linkedin"></i></a></li>
 							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-
+				       </div>
+			       </div>
+		         </div>
+<div class="copyright-cell"> &copy; 2020 <span class="highlight"><span style="color:#F4C430">MkWay </span></span>. Created by Maxifyy</div>
+</div>
 		</footer>
+		
 		
 		<!-- End footer -->
 
-	</div>
-	<!-- End Container -->
+		<!-- End Container -->
 
 	
 	
 
-	<script>
-		var tpj=jQuery;
-		var revapi202;
-		tpj(document).ready(function() {
-			if (tpj("#rev_slider_202_1").revolution == undefined) {
-				revslider_showDoubleJqueryError("#rev_slider_202_1");
-			} else {
-				revapi202 = tpj("#rev_slider_202_1").show().revolution({
-					sliderType: "standard",
-					jsFileLocation: "js/",
-					dottedOverlay: "none",
-					delay: 5000,
-					navigation: {
-						keyboardNavigation: "off",
-						keyboard_direction: "horizontal",
-						mouseScrollNavigation: "off",
-						onHoverStop: "off",
-						arrows: {
-					        enable: true,
-					        style: 'gyges',
-					        left: {
-					            container: 'slider',
-					            h_align: 'left',
-					            v_align: 'center',
-					            h_offset: 20,
-					            v_offset: -60
-					        },
-					 
-					        right: {
-					            container: 'slider',
-					            h_align: 'right',
-					            v_align: 'center',
-					            h_offset: 20,
-					            v_offset: -60
-					        }
-					    },
-						touch: {
-							touchenabled: "on",
-							swipe_threshold: 75,
-							swipe_min_touches: 50,
-							swipe_direction: "horizontal",
-							drag_block_vertical: false
-						},
-						bullets: {
- 
-					        enable: false,
-					        style: 'persephone',
-					        tmp: '',
-					        direction: 'horizontal',
-					        rtl: false,
-					 
-					        container: 'slider',
-					        h_align: 'center',
-					        v_align: 'bottom',
-					        h_offset: 0,
-					        v_offset: 55,
-					        space: 7,
-					 
-					        hide_onleave: false,
-					        hide_onmobile: false,
-					        hide_under: 0,
-					        hide_over: 9999,
-					        hide_delay: 200,
-					        hide_delay_mobile: 1200
- 						}
-					},
-					responsiveLevels: [1210, 1024, 778, 480],
-					visibilityLevels: [1210, 1024, 778, 480],
-					gridwidth: [1210, 1024, 778, 480],
-					gridheight: [700, 700, 600, 600],
-					lazyType: "none",
-					parallax: {
-						type: "scroll",
-						origo: "slidercenter",
-						speed: 1000,
-						levels: [5, 10, 15, 20, 25, 30, 35, 40, 45, 46, 47, 48, 49, 50, 100, 55],
-						type: "scroll",
-					},
-					shadow: 0,
-					spinner: "off",
-					stopLoop: "off",
-					stopAfterLoops: -1,
-					stopAtSlide: -1,
-					shuffle: "off",
-					autoHeight: "off",
-					fullScreenAutoWidth: "off",
-					fullScreenAlignForce: "off",
-					fullScreenOffsetContainer: "",
-					fullScreenOffset: "0px",
-					disableProgressBar: "on",
-					hideThumbsOnMobile: "off",
-					hideSliderAtLimit: 0,
-					hideCaptionAtLimit: 0,
-					hideAllCaptionAtLilmit: 0,
-					debugMode: false,
-					fallbacks: {
-						simplifyAll: "off",
-						nextSlideOnWindowFocus: "off",
-						disableFocusListener: false,
-					}
-				});
-			}
-		}); /*ready*/
-	</script>
-
+	
 	<script src="js/studiare-plugins.min.js"></script>
 	<script src="js/jquery.countTo.js"></script>
 	<script src="js/popper.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-    <script src="http://maps.google.com/maps/api/js?key=AIzaSyCiqrIen8rWQrvJsu-7f4rOta0fmI5r2SI&amp;sensor=false&amp;language=en"></script>
-	<script src="js/gmap3.min.js"></script>
+    
+	
 	<script src="js/script.js"></script>
-
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="build/jquery.runner.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js" integrity="sha512-ZKNVEa7gi0Dz4Rq9jXcySgcPiK+5f01CqW+ZoKLLKr9VMXuCsw3RjWiv8ZpIOa0hxO79np7Ec8DDWALM0bDOaQ==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js" integrity="sha512-+/4Q+xH9jXbMNJzNt2eMrYv/Zs2rzr4Bu2thfvzlshZBvH1g+VGP55W8b6xfku0c0KknE7qlbBPhDPrHFbgK4g==" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous"></script>
+<script>
+	AOS.init({
+		offset:300,
+		duration:1000,
+	});
+	$(document).ready(function(){
+		$('.number').counterUp({
+    delay: 1,
+    time: 2000
+});
+	})
+</script>
 </body>
 </html>
