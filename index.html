@@ -44,14 +44,67 @@
      a{
         font-family:'Quattrocento Sans', sans-serif;
         font-weight:800;
+    }.part2{
+    	margin-top:13vh;
+    	margin-left: 20px;
     }
+    .innerslide{
+    	width:500px;
+    	height: 400px;
+    	margin:auto;
+    }
+    .jumbotron{
+    	background-image:url("img/slide4.jpg");
+    	background-color: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4));
+    	background-size:cover;
+    	background-repeat: no-repeat;
+    }
+     .form{
+     	display: block;
+    	margin:13vh auto;
+    	font-size:16px;
+    	width: 90%;
+    	line-height: 2em;
+    	
+    	border:2px solid #1a0966;
+    	
+
+    }
+    .header{
+    	width:100%;
+    	height:10vh;
+    	display: flex;
+    	justify-content: center;
+    	align-items: center;
+         
+    	background-color: #1a0966;
+    	
+    	font-weight: bolder;
+    	color: #fff;
+    	
+    }
+    .form input{
+    	width:50%;
+    	height: auto;
+    	margin:auto;
+    }
+   
+    .form label{
+    	display: block;
+    	width:50%;
+    	line-height: 38px;
+    	height: auto;
+    	margin:auto;
+    }
+
     .mobile-nav ul li ul{
     	background-color: #000;
     }
     .mobile-nav ul li{
         margin:2em 0;
     }
-	}
+   
+
 	@media(max-width:768px){
 		#classes{
 			background-color:#212529;
@@ -62,12 +115,17 @@
 		#cone{
 			line-height: 1.5em;
 		}
+		.form{
+			width:100%;
+		    margin:10px;
+
+		}
 	}
 
 
 	</style>
 	<!-- Container -->
-	<div id="container">
+	
 		<!-- Header
 		    ================================================== -->
 		<header class="clearfix">
@@ -131,7 +189,7 @@
 											<li><a href="vikas.html">Class 9th</a></li>
 											<li><a href="vinay.html">Class 8th</a></li>
 											
-										</ul>
+									</ul>
 									</li>
 								</ul>
 							<li>
@@ -216,35 +274,73 @@
 
 		</header>
 		<!-- End Header -->
-
-		<!-- home-section 
-			================================================== -->
-			<div id="mycarousel" class="carousel slide carousel-fade" data-ride="">
-				<div class="carousel-inner">
-					<div class="item">
-						<img src="img/slide1.jfif" class="d-block w-100">
-					</div>
-					<div class="item active">
-						<img src="img/slider/banner2.jpg" class="d-block w-100">
-					</div>
+		<!----------------------------------------------------Carousel start % first section------------------------------------------>
+		<div class="row">
+			<div class="col-12 col-lg-8">
+				<div class="part2">
+					<div id="mycarousel" class="carousel slide carousel-fade" data-ride="" >
+				      <div class="carousel-inner">
+						<div class="item">
+							<img src="" class="d-block w-100">
+						</div>
+						<div class="item active">
+							<img src="img/slider/banner2.jpg" class="d-block w-100">
+						</div>
+				      </div>
+						<a href="#mycarousel" class="carousel-control-prev" data-slide="prev">
+							<span class="carousel-control-prev-icon"></span>
+						</a>
+						<a href="#mycarousel" class="carousel-control-next" data-slide="next">
+							<span class="carousel-control-next-icon"></span>
+						</a>
+			        </div>
 				</div>
-				<a href="#mycarousel" class="carousel-control-prev" data-slide="prev">
-					<span class="carousel-control-prev-icon"></span>
-				</a>
-				<a href="#mycarousel" class="carousel-control-next" data-slide="next">
-					<span class="carousel-control-next-icon"></span>
-				</a>
 			</div>
-		
-		<!-- End home section -->
+			<div class="col-12 col-lg-4">
+				 <div class="form">
+			        	<div class="header">Apply Now</div>
+				       <form action="" method="post">
+					     
+							<div class="form-group">
+								
+								<label>Please enter your name</label>
+								<input type="text" name="n1" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Please enter your email</label>
+								<input type="email" name="n2" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Please enter your number</label>
+								<input type="text" name="n4" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Please enter your query</label>
+								<input type="textarea" name="n4" class="form-control">
+							</div>
+							<div class="form-group" style="display:flex; justify-content: center;">
+								<input type="submit" name="s1" class="form-control btn btn-success" style="font-size:16px; background-color: #1a0966; padding:10px">
+							</div>
+				       </form>
+		         	</div>
+			</div>
+		</div>
+		<section>
+			<div class="innerslider">
+				<div class="jumbotron text-white">
+					<h1 style="color:white">We are here to inform you</h1>
+					<h3>We can give a text for your</h3>
+					<p style="color:white">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					<button class="btn btn-success" style="display:block; margin:auto; font-size:20px">Click here</button>
+				</div>
+			</div>
+		</section>
 
-		<!-- feature-section 
-			================================================== -->
-		
-		<!-- End feature section -->
-
-		<!-- collection-section 
-			================================================== -->
 		<section class="collection-section">
 			<div class="container">
 				<div class="title-section">
@@ -303,43 +399,8 @@
 
 		<!-- countdown-section 
 			================================================== -->
-		<section class="countdown-section">
-			<div class="container">
-				<div class="countdown-box">
-					<h1>Limited Time: Book your demo classes now!</h1>
-					<p>Learn anytime, anywhere. Best Courses. Top Instituion.</p>
-					<div class="countdown-item">
-						<div class="row">
-						<div class="col-3" style="margin:0px; padding:0px">
-							<span class="countdown-unit countdown-days" style="margin:0px; padding:0px">
-								<span class="number" id="days">30</span>
-								<span class="text">days</span>
-							</span>
-						</div>
-						<div class="col-3" style="margin:0px; padding:0px">
-							<span class="countdown-unit countdown-hours" style="margin:0px; padding:0px">
-								<span class="number" id="hours" style="margin:0px">23</span>
-								<span class="text" style="margin:0px">hours</span>
-							</span>
-						</div>
-						<div class="col-3" style="margin:0px; padding:0px">
-							<span class="countdown-unit countdown-min" style="margin:0px; padding:0px">
-								<span class="number" id="minutes">59</span>
-								<span class="text">minutes</span>
-							</span>
-						</div>
-						<div  class="col-3" style="margin:0px; padding:0px">
-							<span class="countdown-unit countdown-sec" style="margin:0px; padding:0px">
-								<span class="number" id="seconds">59</span>
-								<span class="text">seconds</span>
-							</span>
-						</div>
-					</div>
-					</div>
-					<a class="button-two" href="form/apply.php">Get my free demo</a>
-				</div>
-			</div>
-		</section>
+		
+			
 		<!-- End countdown section -->
 
 		<!-- popular-courses-section 
@@ -773,7 +834,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js" integrity="sha512-ZKNVEa7gi0Dz4Rq9jXcySgcPiK+5f01CqW+ZoKLLKr9VMXuCsw3RjWiv8ZpIOa0hxO79np7Ec8DDWALM0bDOaQ==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js" integrity="sha512-+/4Q+xH9jXbMNJzNt2eMrYv/Zs2rzr4Bu2thfvzlshZBvH1g+VGP55W8b6xfku0c0KknE7qlbBPhDPrHFbgK4g==" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js" integrity="sha512-A7AYk1fGKX6S2SsHywmPkrnzTZHrgiVT7GcQkLGDe2ev0aWb8zejytzS8wjo7PGEXKqJOrjQ4oORtnimIRZBtw==" crossorigin="anonymous"></script>
-<script>
+<script>  
 	AOS.init({
 		offset:300,
 		duration:1000,
