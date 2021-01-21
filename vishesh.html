@@ -24,93 +24,6 @@
 </head>
 <body>
 
-<style>
-    
-    
-    *{
-        font-family:'Quattrocento Sans', sans-serif;
-    }
-    li{
-        position: relative;
-    }
-    .dropdown{
-        position: absolute;
-    ;
-    }
-    #d2{
-        position: absolute;
-        left: 100%;
-    }
-     a{
-        font-family:'Quattrocento Sans', sans-serif;
-        font-weight:800;
-    }.part2{
-        margin-top:13vh;
-        margin-left: 20px;
-    }
-     .form{
-        display: block;
-        margin:13vh auto;
-        font-size:16px;
-        width: 90%;
-        line-height: 2em;
-        
-        border:2px solid #1a0966;
-        
-
-    }
-    .header{
-        width:100%;
-        height:13vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-         
-        background-color: rgb( 34, 32, 79 );
-        
-        font-weight: bolder;
-        color: #fff;
-        clip-path: ellipse(75% 100% at 45% -10%);
-    }
-    .form input{
-        width:50%;
-        height: auto;
-        margin:auto;
-    }
-   
-    .form label{
-        display: block;
-        width:50%;
-        height: auto;
-        margin:auto;
-    }
-
-    .mobile-nav ul li ul{
-        background-color: #000;
-    }
-    .mobile-nav ul li{
-        margin:2em 0;
-    }
-   
-
-    @media(max-width:768px){
-        #classes{
-            background-color:#212529;
-        }
-        #d2{
-            background-color: #212529;
-        }
-        #cone{
-            line-height: 1.5em;
-        }
-        .form{
-            display: none;
-
-        }
-    }
-
-
-    </style>
     <!-- Container -->
     
         <!-- Header
@@ -149,8 +62,8 @@
                                 <ul class="dropdown" style="background:#fff">
                                     <li><a href="#">Online Classroom</a>
                                         <ul class="dropdown" id="d2">
-                                            <a href="#" style="color:white">IIT Online Courses</a>
-                                            <a href="#" style="color:white">NEET Online Courses</a>
+                                            <a href="#">IIT Online Courses</a>
+                                            <a href="#">NEET Online Courses</a>
                                         </ul>
                                     </li>
                                     <li><a href="#">Pre-Engineering</a>
@@ -306,17 +219,12 @@
 										<div class="info">
 											<span class="label">Category</span>
 											<div class="value">
-												<a href="#">Design <span>/</span></a>
-												<a href="#">Web Design</a>
+												<a href="#">IIT <span>/</span></a>
+												<a href="#">JEE</a>
 											</div>
 										</div>
 									</div>
-									<div class="course-rating before-gallery-unit">
-										<div class="star-rating has-ratings">
-											<span class="rating">4.50</span>
-											<span class="votes-number">2 Votes</span>
-										</div>
-									</div>
+									
 								</div>
 								<div class="course-single-gallery">
 									<img src="img/teacher/vishesh.png" alt="">
@@ -426,85 +334,82 @@ exams like KVPY, Olympiads etc</h2>
 		<footer>
 			<div class="container">
 
-				<div class="up-footer">
+
 					<div class="row">
 
-						<div class="col-lg-4 col-md-6">
+						<div class="col-lg-4 col-12" id="part1">
 							<div class="footer-widget text-widget">
-								<a href="index.html" class="footer-logo"><img src="img/logo/logo3.png" alt=""></a>
-								<p>A premier coaching institute for the preparation of JEE (Main+Advanced), JEE (Main), Pre-Medical (NEET-UG), Pre-Nurture & Career Foundation (Class VI to X, NTSE & Olympiads). The Institute is well regarded for the high quality entrance exams preparation and produces best results year after year</p>
+								<a href="index.html" class="footer-logo"><img src="img/logo/footerlogo.png" style="width:250px;" alt=""></a>
+								<p style="text-align:justify; color:#fff">A premier coaching institute for the preparation of JEE (Main+Advanced), JEE (Main), Pre-Medical (NEET-UG), Pre-Nurture & Career Foundation (Class VI to X, NTSE & Olympiads). The Institute is well regarded for the high quality entrance exams preparation and produces best results year after year</p>
+							</div>
+						</div>
+						   <div class="col-lg-4 col-12" id="part2">
+						   	<div class="location">
+						      	<h2 style="color:#fff;">Location</h2>
 								<ul>
 									<li>
 										<div class="contact-info-icon">
 											<i class="material-icons">location_on</i>
-										</div>
-										<div class="contact-info-value">15, Daryani Heights, Hemu Kalani Circle, Sindhu Nagar, Bhilwara</div>
+										<content>15, Daryani Heights, Hemu Kalani Circle, Sindhu Nagar, Bhilwara</content>
+									    </div>
+							     	</li>
+								    <li>
+									<div class="contact-info-icon">
+											<i class="material-icons">location_on</i>
+									       <content> Love Graden Road, Above Hdfc Bank, Rc Vyas Colany,Bhilwara</content>
+									</div>
 									</li>
 									<li>
 										<div class="contact-info-icon">
 											<i class="material-icons">phone_android</i>
-										</div>
-										<div class="contact-info-value">01482- 237789, 297523</div>
+										    <content> 01482- 237789, 297523</content>
+										 </div>
 									</li>
 									<li>
 										<div class="contact-info-icon">
 											<i class="material-icons">phone_android</i>
-										</div>
-										<div class="contact-info-value">9460110123, 7976778184, 7976745193</div>
+										    <content> 9460110123, 7976778184, 7976745193</content>
+										 </div>
 									</li>
 								</ul>
 							</div>
 						</div>
+						
 
-						<div class="col-lg-4 col-md-6">
+						<div class="col-lg-4 col-12" id="part3">
 							<div class="footer-widget quick-widget">
-								<h2>Quick Links</h2>
-								<ul class="quick-list">
+								<h2 style="color:#fff">Quick Links</h2>
+								<ul class="quick-list" style="font-size:16px">
 									<li><a href="contact.html">Contact</a></li>
-									<li><a href="pricing.html">Pricing Packages</a></li>
+									<li><a href="event2.html">Fee Structure</a></li>
 									<li><a href="about.html">About Us</a></li>
 									<li><a href="courses.html">Courses</a></li>
-									<li><a href="blog.html">News</a></li>
+									
 									<li><a href="index.html">Home</a></li>
-									<li><a href="#">Sample Page</a></li>
+									
 								</ul>
 							</div>
 						</div>
-
-						<div class="col-lg-4 col-md-6">
-							<div class="footer-widget subscribe-widget">
-								<h2>Newsletter</h2>
-								<p>Don’t miss anything, sign up now and keep informed about our company.</p>
-								<div class="newsletter-form">
-									<input class="form-control" type="email" name="EMAIL" placeholder="Enter Your E-mail" required="">
-									<input type="submit" value="Subscribe" style="background-color:rgb(11,9,102)">
-								</div>
-							</div>
-						</div>
-
 					</div>
-				</div>
+				
+  
 
-			</div>
-
-			<div class="footer-copyright copyrights-layout-default">
-				<div class="container">
-					<div class="copyright-inner">
-						<div class="copyright-cell"> &copy; 2019 <span class="highlight">Studiare</span>. Created by CodeBean Team.</div>
-						<div class="copyright-cell">
-							<ul class="studiare-social-links">
-								<li><a href="#" class="facebook"><i class="fa fa-facebook-f"></i></a></li>
-								<li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#" class="google"><i class="fa fa-google-plus"></i></a></li>
-								<li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+		 
+		       <div class="row">
+		 	      <div class="col-lg-12 col-12">
+                       <div class="social-icon">
+							<ul>
+								<li><a href="#" class="facebook"><i class="fab fa-4x fa-facebook-f"></i></a></li>
+								<li><a href="#" class="twitter"><i class="fab fa-4x fa-twitter"></i></a></li>
+								<li><a href="#" class="google"><i class="fab fa-4x fa-google-plus-g"></i></a></li>
+								<li><a href="#" class="linkedin"><i class="fab fa-4x fa-linkedin"></i></a></li>
 							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-
+				       </div>
+			       </div>
+		         </div>
+<div class="copyright-cell"> &copy; 2020 <span class="highlight"><span style="color:#F4C430">MkWay </span></span>. Created by Maxifyy</div>
+</div>
 		</footer>
-		<!-- End footer -->
 
 	</div>
 	<!-- End Container -->
