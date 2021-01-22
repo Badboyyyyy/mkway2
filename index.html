@@ -24,18 +24,43 @@
 </head>
 <body>
 	<style>
-		   .innerslide{
-      width:500px;
-      height: 600px;
-      margin:auto;
-    }
+		.form form input{
+			background:none;
+			border:0px;
+			border-bottom:2px solid  rgb(17,3,103);
+			box-shadow: 5px 5px 1px rgb(17,3,103);
+		}
+		.form form #textarea
+{
+	border:0px;
+	border-bottom:2px solid rgb(17,3,103);
+	display: block;
+	width:50%;
+	margin:auto;
+	background:none;
+	box-shadow: 5px 5px 1px rgb(17,3,103);
+}
+
 		  .jumbotron{
-		  	margin:50px;
+		  	display: flex;
+		  	justify-content: center;
+		  	align-items: center;
 		  	width:80vw;
-      background-image:url("img/slide4.jpg");
-      background-color: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
+		  	height:90vh;
+		  	margin:3vh auto;
+      background-image:url("images/baner.jpg");
+      background-color: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4));
       background-size:cover;
       background-repeat: no-repeat;
+
+    }
+    .jumbotron .text{
+    	padding:10px;
+    	background-color:lightgrey;
+
+    	opacity: 0.3;
+    	box-shadow: 15px 15px 5px black;
+    	border-radius: 10px;
 
     }
    
@@ -50,7 +75,7 @@
 			
 
 		
-			<nav class="navbar navbar-expand-lg fixed-top" style="background-color:white; height:12vh" >
+			<nav class="navbar navbar-expand-lg fixed-top">
 				<div class="container">
 
 					<a class="navbar-brand" style="padding:0px; height:10px" href="index.html">
@@ -192,7 +217,7 @@
 		</header>
 		<!-- End Header -->
 		<!----------------------------------------------------Carousel start % first section------------------------------------------>
-		<div class="row">
+		<div class="row" id="sec1" style="background-color:lightgrey">
 			<div class="col-12 col-lg-8">
 				<div class="part2">
 					<div id="mycarousel" class="carousel slide carousel-fade" data-ride="" >
@@ -233,10 +258,10 @@
 							</div>
 							<div class="form-group">
 								<label>Please enter your query</label>
-								<input type="textarea" name="n4" class="form-control">
+                                <textarea class="form-control" name="n4" id="textarea"></textarea>
 							</div>
 							<div class="form-group" style="display:flex; justify-content: center;">
-								<input type="submit" name="s1" class="form-control btn btn-success" style="font-size:16px; background-color: rgb(17,3,103); padding:10px">
+								<input type="submit" name="s1" class="form-control btn" style="font-size:16px; background-color: rgb(17,3,103);  border-radius:50px; color:white">
 							</div>
 				       </form>
 		         	</div>
@@ -245,15 +270,17 @@
 		<section>
 			<div class="innerslider">
 				<div class="jumbotron text-white">
-					<h1 style="color:white">We are here to inform you</h1>
-					<h3>We can give a text for your</h3>
-					<p style="color:white">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					<div class="text">
+					<h1 style="font-weight: bolder; color:black">We are here to inform you</h1>
+					<h3 style="font-weight:bolder; color:black;">We can give a text for your</h3>
+					<p style="font-weight:bolder; color:black;">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					<button class="btn btn-success" style="display:block; margin:auto; font-size:20px">Click here</button>
+				   <button class="btn btn-success" style="display:block; margin:auto; font-size:20px">Click here</button>
+				</div>
 				</div>
 			</div>
 		</section>
