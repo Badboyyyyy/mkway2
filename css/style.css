@@ -57,24 +57,18 @@
   
 .f{
   width:100%;
-  height:100%;
+  height:auto;
+  margin-top:13vh;
   background-image:url("../images/bkk.jpg");
+  overflow:hidden;
   background-size: 100% 100%;
   box-shadow: 0 10px 20px -6px #000;
 }
- .header{
 
-      
-     
-    
-      
-    
-      
-      
-    }
     .f form{
       width:100%;
       float: right;
+
     }
         .f input{
       width:80%;
@@ -86,10 +80,10 @@
       display: block;
       width:80%;
       color:#BE3437;
-      font-size:16px;
-      line-height: 30px;
+      font-size:20px;
+      line-height: 37px;
       font-weight: bold;
-      font-weight: bolder;
+      
       height: auto;
       margin:auto;
     }
@@ -102,7 +96,7 @@
     .f form #textarea
 {
   border:0px;
-  border-bottom:2px solid rgb(17,3,103);
+  border-bottom:3px solid black;
   display: block;
   width:80%;
   margin:auto;
@@ -1634,17 +1628,7 @@ section.testimonial-section {
       -moz-border-radius: 50%;
       -ms-border-radius: 50%;
       border-radius: 50%; }
-      .sidebar div.course-widget ul.share-list li a:hover {
-        border-color: transparent;
-        color: #fff; }
-      .sidebar div.course-widget ul.share-list li a.facebook:hover {
-        background: #7073e5; }
-      .sidebar div.course-widget ul.share-list li a.google:hover {
-        background: #e6545f; }
-      .sidebar div.course-widget ul.share-list li a.linkedin:hover {
-        background: #0077b5; }
-      .sidebar div.course-widget ul.share-list li a.twitter:hover {
-        background: #63bde3; }
+     
 
 .sidebar .profile-widget .top-part {
   display: flex;
@@ -1783,18 +1767,7 @@ section.testimonial-section {
       -moz-border-radius: 50%;
       -ms-border-radius: 50%;
       border-radius: 50%; }
-      .blog-post.single-post .tags-share-box ul.share-list li a:hover {
-        border-color: transparent;
-        color: #fff; }
-      .blog-post.single-post .tags-share-box ul.share-list li a.facebook:hover {
-        background: #7073e5; }
-      .blog-post.single-post .tags-share-box ul.share-list li a.google:hover {
-        background: #e6545f; }
-      .blog-post.single-post .tags-share-box ul.share-list li a.linkedin:hover {
-        background: #0077b5; }
-      .blog-post.single-post .tags-share-box ul.share-list li a.twitter:hover {
-        background: #63bde3; }
-
+     
 .blog-post.single-post .about-author {
   padding-top: 30px;
   display: flex; }
@@ -1984,17 +1957,8 @@ section.teachers-section {
           -moz-border-radius: 50%;
           -ms-border-radius: 50%;
           border-radius: 50%; }
-          section.teachers-section .profile-image ul.social-links li a:hover {
-            border-color: transparent;
-            color: #fff; }
-          section.teachers-section .profile-image ul.social-links li a.facebook:hover {
-            background: #7073e5; }
-          section.teachers-section .profile-image ul.social-links li a.google:hover {
-            background: #e6545f; }
-          section.teachers-section .profile-image ul.social-links li a.linkedin:hover {
-            background: #0077b5; }
-          section.teachers-section .profile-image ul.social-links li a.twitter:hover {
-            background: #63bde3; }
+      
+        
   section.teachers-section .profile-details {
     background-color: #fff;
     padding: 30px;
@@ -2601,17 +2565,7 @@ section.single-event-section {
           -moz-border-radius: 50%;
           -ms-border-radius: 50%;
           border-radius: 50%; }
-          section.single-event-section .single-event-box .event-content ul.share-list li a:hover {
-            border-color: transparent;
-            color: #fff; }
-          section.single-event-section .single-event-box .event-content ul.share-list li a.facebook:hover {
-            background: #7073e5; }
-          section.single-event-section .single-event-box .event-content ul.share-list li a.google:hover {
-            background: #e6545f; }
-          section.single-event-section .single-event-box .event-content ul.share-list li a.linkedin:hover {
-            background: #0077b5; }
-          section.single-event-section .single-event-box .event-content ul.share-list li a.twitter:hover {
-            background: #63bde3; }
+          
   section.single-event-section .single-event-box #map {
     height: 280px; }
 
@@ -3010,33 +2964,32 @@ footer .container #part2 ul , footer .container #part3 ul{
 .social-icon ul li a{
   width:50px;
   height:50px;
-  background-color: #f5f6fa;
+  background-color:black;
   border-radius: 50px;
   text-align: center;
-  
+   border:1px solid #999;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.social-icon ul li a .fa-facebook-f {
-  color: #3b5998;
-  background-image: linear-gradient( to bottom, transparent 20%, white 20%, white 93%, transparent 93% );
-  background-size: 55%;
-  background-position: 70% 0;
-  background-repeat: no-repeat;
+
+
+.social-icon ul li a i{
+
+  color:white !important;
 }
-
-.social-icon ul li .twitter{
-   background: #55ACEE !important;
-  color: white !important;
+.social-icon ul li a .fa-facebook-f:hover{
+  color:#3b5998 !important;
 }
-.social-icon ul li .google{
-  background: #dd4b39;
-  color: white;
-
+.social-icon ul li a .fa-twitter:hover{
+  color:#00b6f1 !important;
 }
-
-
+.social-icon ul li a .fa-google-plus-g:hover{
+  color:#c20806 !important;
+}
+.social-icon ul li a .fa-linkedin:hover{
+  color:#04669A !important;
+}
 @media (max-width: 767px) {
   section.single-course-section .course-reviews .course-reviews-inner .ratings-box .detailed-box ul.detailed-lines li div.outer {
     width: 120px; } 
