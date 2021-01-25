@@ -24,43 +24,31 @@
 </head>
 <body>
 	<style>
-		.form form input{
-			background:none;
-			border:0px;
-			border-bottom:2px solid  rgb(17,3,103);
-			box-shadow: 5px 5px 1px rgb(17,3,103);
-		}
-		.form form #textarea
-{
-	border:0px;
-	border-bottom:2px solid rgb(17,3,103);
-	display: block;
-	width:50%;
-	margin:auto;
-	background:none;
-	box-shadow: 5px 5px 1px rgb(17,3,103);
-}
+		
 
 		  .jumbotron{
 		  	display: flex;
 		  	justify-content: center;
 		  	align-items: center;
-		  	width:80vw;
+		  	width:100vw;
 		  	height:90vh;
 		  	margin:3vh auto;
       background-image:url("img/bbb.JPG");
-      background-color: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4));
+
+      opacity: 0.4;
       background-size:cover;
       background-repeat: no-repeat;
 
     }
     .jumbotron .text{
     	padding:10px;
-    	background-color:lightgrey;
+    	background:rgba(255,255,255,0.3);
+    	color:#000;
 
-    	opacity: 0.3;
+    	opacity: 1;
     	box-shadow: 15px 15px 5px black;
     	border-radius: 10px;
+
 
     }
    
@@ -239,9 +227,9 @@
 				</div>
 			</div>
 			<div class="col-12 col-lg-4">
-				 <div class="form">
-			        	<div class="header">Apply Now</div>
-				       <form action="" method="post">
+				<div class="f">
+					<div class="header"><h1>Apply Now</h1></div>
+				       <form action="" method="post" style="margin-top:14vh">
 					     
 							<div class="form-group">
 								
@@ -253,7 +241,7 @@
 								<input type="email" name="n2" class="form-control">
 							</div>
 							<div class="form-group">
-								<label>Please enter your number</label>
+								<label>Please enter number</label>
 								<input type="text" name="n4" class="form-control">
 							</div>
 							<div class="form-group">
@@ -261,11 +249,12 @@
                                 <textarea class="form-control" name="n4" id="textarea"></textarea>
 							</div>
 							<div class="form-group" style="display:flex; justify-content: center;">
-								<input type="submit" name="s1" class="form-control btn" style="font-size:16px; background-color: rgb(17,3,103);  border-radius:50px; color:white">
+								<input type="submit" name="s1" class="form-control btn" style="font-size:16px; background-color:#BE3437;  border-radius:50px; color:white">
 							</div>
 				       </form>
 		         	</div>
-			</div>
+				</div>
+				
 		</div>
 		<section>
 			<div class="innerslider">
@@ -346,7 +335,7 @@
 
 		<!-- popular-courses-section 
 			================================================== -->
-		<section class="popular-courses-section">
+		<section class="popular-courses-section" style="background-color:lightgrey">
 			<div class="container">
 				<div class="title-section">
 					<div class="left-part">
